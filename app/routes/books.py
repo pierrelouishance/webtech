@@ -8,13 +8,21 @@ import app.services.services as service
 
 
 
-router = APIRouter(prefix="/books", tags=["First"])
+router = APIRouter(prefix="/books", tags=["Books"])
  
 @router.get('/')
 def get_books():
     books=service.get_all_books()
     return JSONResponse(
         content=[book.model_dump() for book in books],
+        status_code=200,
+    )
+@router.get('/number')
+def get_books_number():
+    books=service.get_all_books()
+    number_books=len(books)
+    return JSONResponse(
+        content=number_books,
         status_code=200,
     )
 
@@ -33,6 +41,7 @@ def create_new_book(name: str, auteur: str,editeur: str):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid book information structure.",
         )
+    
     service.save_book(new_book)
     return JSONResponse(new_book.model_dump())
     

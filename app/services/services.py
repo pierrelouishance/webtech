@@ -11,3 +11,7 @@ def get_all_books()  -> list[Book]:  # (retirer les deux points après la foncti
 def save_book(new_book: Book) -> Book:
     database["books"].append(new_book)
     return new_book
+
+
+
+
