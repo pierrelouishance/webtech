@@ -44,4 +44,17 @@ def create_new_book(name: str, auteur: str,editeur: str):
     
     service.save_book(new_book)
     return JSONResponse(new_book.model_dump())
-    
+
+
+@router.delete('/{book_id}')
+def delete_book(book_id: str):
+    # VÃ©rifier si le livre existe
+    book = service.get_book_by_id(book_id)
+    if book is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book not found.",
+        )
+    # Supprimer le livre
+    service.delete_book(book_id)
+    return JSONResponse({"detail": "Book deleted successfully."})
