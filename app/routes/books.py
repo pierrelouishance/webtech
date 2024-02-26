@@ -61,14 +61,14 @@ def delete_book(book_id: str):
 
 @router.put('/{book_id}', description=" Used to Update Book")
 def update_book(book_id: str, name: str, auteur: str, editeur: str):
-    book = service.get_book_by_id(id)
+    book = service.get_book_by_id(book_id)
     if book is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Book not found.",
         )
 
-    book_data = {
+    updated_book_data = {
         "id": book_id,
         "name": name,
         "auteur": auteur,
@@ -76,7 +76,7 @@ def update_book(book_id: str, name: str, auteur: str, editeur: str):
     }
 
     try:
-        updated_book = Book.model_validate(book_data)
+        updated_book = Book.model_validate(updated_book_data)
     except ValidationError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
