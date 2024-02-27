@@ -58,3 +58,5 @@ def delete_book(book_id: str):
     # Supprimer le livre
     service.delete_book(book_id)
     return JSONResponse({"detail": "Book deleted successfully."})
+
+
