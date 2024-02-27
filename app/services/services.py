@@ -14,6 +14,7 @@ def get_all_books()  -> list[Book]:
 
     books_data = database["books"]
     books = [Book.model_validate(data) for data in books_data] 
+    return books
 
 def save_book(new_book: Book) -> Book:
     """
