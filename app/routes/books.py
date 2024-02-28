@@ -117,15 +117,21 @@ def update_book(book_id: str, name: str, auteur: str, editeur: str):
         JSONResponse: A JSON response containing the updated book's information.
     """
     # Creating a dictionary containing the updated information of the book
-    updated_book_data = {
-        "id": book_id,
-        "name": name,
-        "auteur": auteur,
-        "editeur": editeur
-    }
+    # updated_book_data = {
+    #     "id": book_id,
+    #     "name": name,
+    #     "auteur": auteur,
+    #     "editeur": editeur
+    # }
     try:
         # Validating the updated data with the Book model
-        updated_book = Book(**updated_book_data)
+        # updated_book = Book(**updated_book_data)
+        updated_book = Book(
+            id=book_id,
+            name=name,
+            auteur=auteur,
+            editeur=editeur,
+        )
     except ValidationError:
         # In case of validation error, return an HTTP 400 error
         raise HTTPException(
