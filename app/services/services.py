@@ -1,18 +1,22 @@
 from app.database import database
 from app.schemas.schemas import Book
-from fastapi import HTTPException
+
+from fastapi import APIRouter, HTTPException, status
 
 
-def get_all_books() -> list[Book]:
+def get_all_books()  -> list[Book]:  
+
     """
     Get all books from the database.
 
     Returns:
         list[Book]: A list of Book objects representing all the books.
-    """
-    # Retrieving books data from the database and converting it into Book objects
+
+    """    
+
     books_data = database["books"]
-    books = [Book(**data) for data in books_data]
+    books = [Book.model_validate(data) for data in books_data] 
+
     return books
 
 def save_book(new_book: Book) -> Book:
@@ -25,9 +29,11 @@ def save_book(new_book: Book) -> Book:
     Returns:
         Book: The saved Book object.
     """
-    # Appending the dictionary representation of the new book to the database
-    database["books"].append(new_book.dict())
+
+    database["books"].append(new_book)
     return new_book
+
+
 
 def get_book_by_id(book_id: str):
     """
@@ -39,7 +45,8 @@ def get_book_by_id(book_id: str):
     Returns:
         dict: The dictionary representation of the book if found, else None.
     """
-    # Iterating through the books in the database to find the one with the specified ID
+
+
     for book in database["books"]:
         if book['id'] == book_id:
             return book
@@ -55,19 +62,38 @@ def delete_book(book_id: str):
     Raises:
         HTTPException: If the book with the specified ID is not found.
     """
-    # Getting the initial length of the books list in the database
-    initial_length = len(database["books"])
-    
-    # Removing the book with the specified ID from the database
-    database["books"] = [book for book in database["books"] if book["id"] != book_id]
-    
-    # Checking if the length of the books list has changed after deletion
-    if initial_length == len(database["books"]):
-        # If the length hasn't changed, raise an HTTP 404 error indicating that the book was not found
+
+    global database
+
+    book_index = None
+    for i, book in enumerate(database["books"]):
+        if book['id'] == book_id:
+            book_index = i
+            break
+
+    if book_index is None:
         raise HTTPException(
-            status_code=404,
-            detail="Book not found."
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book not found.",
         )
+
+
+    del database["books"][book_index]
+
+
+#     # Getting the initial length of the books list in the database
+#     initial_length = len(database["books"])
+    
+#     # Removing the book with the specified ID from the database
+#     database["books"] = [book for book in database["books"] if book["id"] != book_id]
+    
+#     # Checking if the length of the books list has changed after deletion
+#     if initial_length == len(database["books"]):
+#         # If the length hasn't changed, raise an HTTP 404 error indicating that the book was not found
+#         raise HTTPException(
+#             status_code=404,
+#             detail="Book not found."
+#         )
 
 def update_book(book_id: str, updated_book: Book):
     """
