@@ -10,12 +10,12 @@ Ce projet vise à créer une API de gestion de livres en utilisant FastAPI, une 
 - **Mise à jour des livres** : Les informations d'un livre peuvent être mises à jour en fournissant son identifiant ainsi que les détails mis à jour.
 
 ## Instructions d'utilisation
+1. **Activer la varible d'envirnnement** : la variable d'environnement env est présent dans le repository, pour l'activer, lancez la cmmande `.\env\Scripts\activate`
+2. **Installation des dépendances** : Assurez-vous d'avoir Python installé sur votre système `python --version` que vous êtes bien sur le chemin indiqué en éxécutant `where python`. Ensuite, installez les dépendances du projet en exécutant `pip install -r requirements.txt`.
 
-1. **Installation des dépendances** : Assurez-vous d'avoir Python installé sur votre système. Ensuite, installez les dépendances du projet en exécutant `pip install -r requirements.txt`.
+3. **Démarrage du serveur** : Lancez le serveur en exécutant `uvicorn app.main:app --reload`. Cela lancera le serveur sur `http://localhost:8000`.
 
-2. **Démarrage du serveur** : Lancez le serveur en exécutant `uvicorn app.main:app --reload`. Cela lancera le serveur sur `http://localhost:8000`.
-
-3. **Utilisation de l'API** : Vous pouvez maintenant accéder à l'API en utilisant les points de terminaison fournis dans le fichier `books.py`. Par exemple, pour afficher tous les livres, visitez `http://localhost:8000/books/`
+4. **Utilisation de l'API** : Vous pouvez maintenant accéder à l'API en utilisant les points de terminaison fournis dans le fichier `books.py`. Par exemple, pour afficher tous les livres, visitez `http://localhost:8000/books/`la page s'affiche clair sans utiliser la documentation interactive automatique de l'API (fournie par Swagger UI), pour l'avoir visiter `http://localhost:8000/docs#/books/`
 
 ## Les Étapes pour Utiliser les Fonctionnalités CRUD avec FastAPI
 
@@ -38,7 +38,7 @@ Pour utiliser les fonctionnalités CRUD (Create, Read, Update, Delete) avec Fast
    ```
 
 4. **Exploration de la Documentation Swagger :**
-   - Accédez à `http://localhost:8000/docs` dans votre navigateur pour découvrir la documentation interactive Swagger UI.
+   - Accédez à `http://localhost:8000/docs#/Books` dans votre navigateur pour découvrir la documentation interactive Swagger UI.
    - Consultez la documentation pour connaître les points de terminaison disponibles ainsi que les schémas des données acceptées et retournées.
 
 5. **Utilisation des Points de Terminaison CRUD :**
