@@ -11,12 +11,7 @@ import app.services.services as service
 
 # Creating a router for operations related to books
 router = APIRouter(prefix="/books", tags=["Books"])
-
-
-router = APIRouter(prefix="/books", tags=["Books"])
- 
 @router.get('/')
-
 def get_books():
     """
     Retrieve all books.
@@ -24,11 +19,14 @@ def get_books():
     Returns:
         JSONResponse: A JSON response containing the list of books.
     """
-    books=service.get_all_books()
+    # Calling the service function to get all books
+    books = service.get_all_books()
+    # Returning a JSON response containing the books as a dictionary
     return JSONResponse(
-        content=number_books,
+        content=[book.model_dump() for book in books],  # Using the model_dump method for each book
         status_code=200,
     )
+
 @router.get('/number')
 def get_books_number():
     """
@@ -37,8 +35,11 @@ def get_books_number():
     Returns:
         JSONResponse: A JSON response containing the number of books.
     """
-    books=service.get_all_books()
-    number_books=len(books)
+    # Calling the service function to get all books
+    books = service.get_all_books()
+    # Calculating the total number of books
+    number_books = len(books)
+    # Returning a JSON response containing the number of books
     return JSONResponse(
         content=number_books,
         status_code=200,
@@ -46,8 +47,7 @@ def get_books_number():
 
 
 @router.post('/')
-def create_new_book(name: str, auteur: str,editeur: str):
-
+def create_new_book(name: str, auteur: str, editeur: str):
     """
     Create a new book.
 
@@ -59,8 +59,7 @@ def create_new_book(name: str, auteur: str,editeur: str):
     Returns:
         JSONResponse: A JSON response containing the information of the new book.
     """
-
-
+    # Creating a new book with a randomly generated ID
     new_book_data = {
         "id": str(uuid4()),  # Generating a new ID
         "name": name,
@@ -77,16 +76,13 @@ def create_new_book(name: str, auteur: str,editeur: str):
             detail="Invalid book information structure.",
         )
     
-
-
+    # Calling the service function to save the new book
     service.save_book(new_book)
     # Returning a JSON response containing the information of the new book
     return JSONResponse(new_book.model_dump())
 
-
-
+# Route to delete a book by its ID
 @router.delete('/{book_id}')
-
 def delete_book(book_id: str):
     """
     Delete a book by its ID.
@@ -97,20 +93,12 @@ def delete_book(book_id: str):
     Returns:
         JSONResponse: A JSON response indicating that the book has been deleted successfully.
     """
-    
-    book = service.get_book_by_id(book_id)
-    if book is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Book not found.",
-        )
-
+    # Calling the service function to delete the book with the specified ID
     service.delete_book(book_id)
+    # Returning a JSON response indicating that the book has been deleted successfully
     return JSONResponse({"detail": "Book deleted successfully."})
 
-
-
-@router.put('/{book_id}', description="Update a book's information")
+@router.put('/{book_id}')
 def update_book(book_id: str, name: str, auteur: str, editeur: str):
     """
     Update a book's information.
