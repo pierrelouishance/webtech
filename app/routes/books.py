@@ -3,33 +3,34 @@ from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 from uuid import uuid4
 
+from fastapi import APIRouter, HTTPException, status, Request, Form
+from fastapi.responses import RedirectResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse
+
 from app.schemas.schemas import Book
 import app.services.services as service
-
+templates = Jinja2Templates(directory="templates")
 
 
 router = APIRouter(prefix="/books", tags=["Books"])
  
-@router.get('/')
-def get_books():
+@router.get('/liste')
+def get_books(request : Request):
     """
-    Retrieve all books.
-
-    Returns:
-        JSONResponse: A JSON response containing the list of books.
+  Show books
     """
     books=service.get_all_books()
-    return JSONResponse(
-        content=[book.model_dump() for book in books],
-        status_code=200,
-    )
+    return templates.TemplateResponse(
+request, "liste_books.html", context={"books": books})
+def execute_function():
+    print("ok")
+
 @router.get('/number')
 def get_books_number():
     """
     Retrieve the total number of books.
 
-    Returns:
-        JSONResponse: A JSON response containing the number of books.
     """
     books=service.get_all_books()
     number_books=len(books)
@@ -69,8 +70,8 @@ def create_new_book(name: str, auteur: str,editeur: str):
     return JSONResponse(new_book.model_dump())
 
 
-@router.delete('/{book_id}')
-def delete_book(book_id: str):
+@router.post('/delete/{book_id}')
+def delete_book(book_id: str,):
     """
     Delete a book by its ID.
 
@@ -89,7 +90,9 @@ def delete_book(book_id: str):
         )
 
     service.delete_book(book_id)
-    return JSONResponse({"detail": "Book deleted successfully."})
+    response = RedirectResponse(url="/books/liste")
+    response.status_code = 302
+    return response
 
 
 @router.put('/{book_id}', description="Update a book's information")
