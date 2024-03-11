@@ -5,7 +5,7 @@
 - Pierre-Louis HANCE
 - Chaimae MOUSSA
 
-## À propos de ce projet
+## À propos de ce projets
 
 ## Pour commencer
 
