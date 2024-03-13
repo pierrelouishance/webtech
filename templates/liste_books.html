@@ -1,0 +1,15 @@
+{% extends "accueil.html" %}
+{% block content %}
+    <h1 class="mt-5"> Liste des Livres </h1>
+    <p class="lead"> Voici la liste de tous les livres disponibles : </p>
+    <ul class="list-group">
+        {% for book in books %}
+            <li class="list-group-item">
+                <strong>{{ book.name }}</strong> par {{ book.auteur }}, publié par {{ book.editeur }}
+                <form action="/books/delete/{{ book.id }}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-danger btn-sm ml-2"> Supprimer </button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

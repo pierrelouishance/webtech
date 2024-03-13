@@ -1,0 +1,19 @@
+body {
+    background-color: #f8f9fa;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px 20px;
+    text-align: center;
+}
+h1 {
+    color: #343a40;
+}
+.lead {
+    color: #6c757d;
+}
+.btn {
+    margin-top: 20px;
+    margin-right: 10px;
+}
