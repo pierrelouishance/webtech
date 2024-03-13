@@ -3,28 +3,36 @@ from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 from uuid import uuid4
 
+
 from fastapi import APIRouter, HTTPException, status, Request, Form
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse
+
+from fastapi import APIRouter, Request
 
 from app.schemas.schemas import Book
 import app.services.services as service
+
 templates = Jinja2Templates(directory="templates")
 
-
 router = APIRouter(prefix="/books", tags=["Books"])
- 
+
+
 @router.get('/liste')
-def get_books(request : Request):
+def get_books(request: Request):
     """
   Show books
     """
-    books=service.get_all_books()
+    books = service.get_all_books()
     return templates.TemplateResponse(
-request, "liste_books.html", context={"books": books})
+        request, "liste_books.html", context={"books": books})
+
+
 def execute_function():
     print("ok")
+
 
 @router.get('/number')
 def get_books_number():
@@ -32,46 +40,18 @@ def get_books_number():
     Retrieve the total number of books.
 
     """
-    books=service.get_all_books()
-    number_books=len(books)
+    books = service.get_all_books()
+    number_books = len(books)
     return JSONResponse(
         content=number_books,
         status_code=200,
     )
 
-@router.post('/')
-def create_new_book(name: str, auteur: str,editeur: str):
-    """
-    Create a new book.
 
-    Args:
-        name (str): The name of the book.
-        auteur (str): The author of the book.
-        editeur (str): The publisher of the book.
-
-    Returns:
-        JSONResponse: A JSON response containing the information of the new book.
-    """
-    new_book_data = {
-        "id": str(uuid4()),
-        "name": name,
-        "auteur": auteur,
-        "editeur" : editeur
-    }
-    try:
-        new_book = Book.model_validate(new_book_data)
-    except ValidationError:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid book information structure.",
-        )
-    
-    service.save_book(new_book)
-    return JSONResponse(new_book.model_dump())
 
 
 @router.post('/delete/{book_id}')
-def delete_book(book_id: str,):
+def delete_book(book_id: str, ):
     """
     Delete a book by its ID.
 
@@ -81,7 +61,7 @@ def delete_book(book_id: str,):
     Returns:
         JSONResponse: A JSON response indicating that the book has been deleted successfully.
     """
-    
+
     book = service.get_book_by_id(book_id)
     if book is None:
         raise HTTPException(
@@ -130,3 +110,46 @@ def update_book(book_id: str, name: str, auteur: str, editeur: str):
     service.update_book(book_id, updated_book)
     # Returning a JSON response containing the updated book's information
     return JSONResponse(updated_book.model_dump())
+
+
+@router.get("/add", response_class=HTMLResponse)
+async def get_add_book(request: Request):
+    return templates.TemplateResponse(
+        "add_book.html",
+        {"request": request, "name": "", "auteur": "", "editeur": ""}
+    )
+
+
+@router.post("/add")  # Utilisation de '/add' au lieu de '/'
+async def create_new_book(name: str = Form(...), auteur: str=Form(...), editeur: str=Form(...)):
+
+    """
+    Create a new book.
+    Args:
+        name (str): The name of the book.
+        auteur (str): The author of the book.
+        editeur (str): The publisher of the book.
+    Returns:
+        RedirectResponse: Redirects to the list of books after successful addition.
+    """
+    new_book_data = {
+        "id": str(uuid4()),
+        "name": name,
+        "auteur": auteur,
+        "editeur": editeur,
+    }
+
+    try:
+        new_book = Book(**new_book_data)
+    except ValidationError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid book information structure.",
+        )
+
+    service.save_book(new_book)
+
+    # Rediriger vers la liste des livres après l'ajout réussi
+    return RedirectResponse(url="/books/liste", status_code=status.HTTP_303_SEE_OTHER)
+
+

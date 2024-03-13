@@ -5,13 +5,55 @@
     <title>Bienvenue dans notre accueil</title>
     {% endblock %}
 
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+div.scrollmenu {
+  background-color: #333;
+  overflow: auto;
+  white-space: nowrap;
+}
+li {
+  border-right: 1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
+</style>
+</head>
+<body>
+
+<div class="scrollmenu">
+    <a class="btn btn-outline-dark mx-2" href="/books/liste">Liste des Livres</a>
+    <a class="btn btn-outline-dark mx-2" href="/books/add">Ajouter des livres</a>
+    <a class="btn btn-outline-dark mx-2" href="/books/Edit">modifier des Livres</a>
+
+
+</div>
+
+<h2>Bienvenue sur le site</h2>
+
+
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
     {% block content %}
-    <h1>Bienvenue dans notre accueil </h1>
 
-    <a class="btn btn-outline-dark mx-2" href="/books/liste">Liste des Livres</a>
+
+
 
     {% endblock %}
 

@@ -26,7 +26,8 @@ def save_book(new_book: Book) -> Book:
     Returns:
         Book: The saved Book object.
     """
-    database["books"].append(new_book)
+    book_dict = new_book.dict()  # Conversion de l'objet Pydantic en dictionnaire
+    database["books"].append(book_dict)
     return new_book
 
 
