@@ -1,46 +1,84 @@
-from fastapi import APIRouter, Form, HTTPException, Request, status
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
+from fastapi import APIRouter, HTTPException, Response, status, Request, Form
+from fastapi.responses import JSONResponse, RedirectResponse, HTMLResponse
 from pydantic import ValidationError
 from uuid import uuid4
+from fastapi.templating import Jinja2Templates
 from app.schemas.schemas import Book
 import app.services.services as service
+
 templates = Jinja2Templates(directory="templates")
-
-
 router = APIRouter(prefix="/books", tags=["Books"])
- 
-@router.get('/liste', response_class=HTMLResponse)
-def get_books(request : Request):
-    """
-  Show books
-    """
-    books=service.get_all_books()
-    return templates.TemplateResponse( request, "liste_books.html", context={"books": books})
-def execute_function():
-    print("ok")
 
-@router.get('/update', response_class=HTMLResponse)
-def get_update_book(request : Request):
 
-    return templates.TemplateResponse( request, "update_books.html")
+@router.get('/liste')
+async def get_books(request: Request) -> HTMLResponse:
+    """
+    Retrieve all books and render a page to display them.
+
+    Args:
+        request (Request): The incoming request.
+
+    Returns:
+        HTMLResponse: HTML page displaying the list of books.
+    """
+    books = service.get_all_books()
+    return templates.TemplateResponse("liste_books.html", context={ "request" : request , "books": books})
+
+
+@router.get('/delete/{book_id}')
+async def delete_book(book_id: str) -> RedirectResponse:
+    """
+    Delete a book by its ID.
+
+    Args:
+        book_id (str): The ID of the book to be deleted.
+
+    Returns:
+        RedirectResponse: Redirects to the list of books after successful deletion.
+    """
+    book = service.get_book_by_id(book_id)
+    if book is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book not found.",
+        )
+
+    service.delete_book(book_id)
+    return RedirectResponse(url="/books/liste", status_code=status.HTTP_302_FOUND)
 
 
 @router.get('/number')
-def get_books_number():
+async def get_books_number() -> JSONResponse:
     """
     Retrieve the total number of books.
 
+    Returns:
+        JSONResponse: JSON response containing the number of books.
     """
-    books=service.get_all_books()
-    number_books=len(books)
+    books = service.get_all_books()
+    number_books = len(books)
     return JSONResponse(
-        content=number_books,
-        status_code=200,
+        content={"number_of_books": number_books},
+        status_code=status.HTTP_200_OK,
     )
 
-@router.post('/add')
-def create_new_book(name: str, auteur: str,editeur: str):
+
+@router.get("/add", response_class=HTMLResponse)
+async def get_add_book(request: Request) -> HTMLResponse:
+    """
+    Render a page for adding a new book.
+
+    Args:
+        request (Request): The incoming request.
+
+    Returns:
+        HTMLResponse: HTML page for adding a new book.
+    """
+    return templates.TemplateResponse("add_book.html", {"request": request, "name": "", "auteur": "", "editeur": ""})
+
+
+@router.post("/add", response_class=RedirectResponse)
+async def create_new_book(name: str = Form(...), auteur: str = Form(...), editeur: str = Form(...)) -> RedirectResponse:
     """
     Create a new book.
 
@@ -50,63 +88,70 @@ def create_new_book(name: str, auteur: str,editeur: str):
         editeur (str): The publisher of the book.
 
     Returns:
-        JSONResponse: A JSON response containing the information of the new book.
+        RedirectResponse: Redirects to the list of books after successful addition.
     """
     new_book_data = {
         "id": str(uuid4()),
         "name": name,
         "auteur": auteur,
-        "editeur" : editeur
+        "editeur": editeur,
     }
+
     try:
-        new_book = Book.model_validate(new_book_data)
+        new_book = Book(**new_book_data)
     except ValidationError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid book information structure.",
         )
-    
+
     service.save_book(new_book)
-    return RedirectResponse(url="/books/liste")
+
+    return RedirectResponse(url="/books/liste", status_code=status.HTTP_303_SEE_OTHER)
 
 
-@router.post('/delete/{book_id}')
-def delete_book(book_id: str):
+@router.get("/book/edit/{book_id}", response_class=HTMLResponse)
+async def edit_book(request: Request, book_id: str) -> HTMLResponse:
     """
-    Delete a book by its ID.
+    Render a page for editing a book.
 
     Args:
-        book_id (str): The ID of the book to be deleted.
+        request (Request): The incoming request.
+        book_id (str): The ID of the book to be edited.
 
     Returns:
-        JSONResponse: A JSON response indicating that the book has been deleted successfully.
+        HTMLResponse: HTML page for editing the book.
     """
-    
     book = service.get_book_by_id(book_id)
     if book is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Book not found.",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 
-    service.delete_book(book_id)
-    response = RedirectResponse(url="/books/liste")
-    response.status_code = 302
-    return response
+    return templates.TemplateResponse("edit_book.html", {"request": request, "book": book})
 
 
-@router.post('/update/{book_id}')
-def update_book(book_id: str, name: str = Form(...), auteur: str = Form(...), editeur: str = Form(...)):
-    updated_book_data = {
-        "id": book_id,
-        "name": name,
-        "auteur": auteur,
-        "editeur": editeur
-    }
-    try:
-        updated_book = Book(**updated_book_data)
-    except ValidationError:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid book information structure.")
+@router.post("/update", response_class=RedirectResponse)
+async def update_book(book_id: str = Form(...), name: str = Form(...), auteur: str = Form(...), editeur: str = Form(...)) -> RedirectResponse:
+    """
+    Update details of a book.
 
-    service.update_book(book_id, updated_book)
-    return RedirectResponse(url="/books/liste")
+    Args:
+        request (Request): The incoming request.
+        book_id (str): The ID of the book to be updated.
+        name (str): The updated name of the book.
+        auteur (str): The updated author of the book.
+        editeur (str): The updated publisher of the book.
+
+    Returns:
+        RedirectResponse: Redirects to the list of books after successful update.
+    """
+    book = service.get_book_by_id(book_id)
+    if book is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+
+    book.name = name
+    book.auteur = auteur
+    book.editeur = editeur
+
+    service.update_book(book_id, book)
+
+    return RedirectResponse(url="/books/liste", status_code=status.HTTP_302_FOUND)
