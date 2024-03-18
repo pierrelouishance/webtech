@@ -103,4 +103,59 @@ h1, h2, h3, h4, h5, h6 {
 .nav-link:hover {
     background-color: #007bff; /* Couleur de fond au survol */
     color: #fff; /* Couleur du texte au survol */
+
+
+    font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.container {
+  display: flex;
+  align-items: center;
+}
+.text {
+  flex: 1;
+  padding: 20px;
+}
+.image {
+  width: 600px;
+  height: auto;
+}
+.input-box {
+  margin-top: 20px;
+  display: flex;
+}
+.input-box input {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.input-box button {
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+.menu li {
+  margin-bottom: 10px;
+}
+.menu li a {
+  text-decoration: none;
+  color: #007bff;
+    font-size: 1.5em;
+
 }

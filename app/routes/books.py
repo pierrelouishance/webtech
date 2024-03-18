@@ -77,19 +77,10 @@ async def get_add_book(request: Request) -> HTMLResponse:
     return templates.TemplateResponse("add_book.html", {"request": request, "name": "", "auteur": "", "editeur": ""})
 
 
+
+
 @router.post("/add", response_class=RedirectResponse)
 async def create_new_book(name: str = Form(...), auteur: str = Form(...), editeur: str = Form(...)) -> RedirectResponse:
-    """
-    Create a new book.
-
-    Args:
-        name (str): The name of the book.
-        auteur (str): The author of the book.
-        editeur (str): The publisher of the book.
-
-    Returns:
-        RedirectResponse: Redirects to the list of books after successful addition.
-    """
     new_book_data = {
         "id": str(uuid4()),
         "name": name,
@@ -99,15 +90,19 @@ async def create_new_book(name: str = Form(...), auteur: str = Form(...), editeu
 
     try:
         new_book = Book(**new_book_data)
-    except ValidationError:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid book information structure.",
-        )
+        service.save_book(new_book)
+        return RedirectResponse(url="/books/liste", status_code=status.HTTP_303_SEE_OTHER)
 
-    service.save_book(new_book)
+    except ValidationError as e:
+        # Si une ValidationError est levée (données invalides), rediriger vers la page d'erreur
+        return RedirectResponse(url="/books/error_add", status_code=status.HTTP_303_SEE_OTHER)
 
-    return RedirectResponse(url="/books/liste", status_code=status.HTTP_303_SEE_OTHER)
+
+
+
+@router.get("/error_add", response_class=HTMLResponse)
+async def error_add_page(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse("error_add.html", {"request": request})
 
 
 @router.get("/book/edit/{book_id}", response_class=HTMLResponse)
@@ -155,3 +150,17 @@ async def update_book(book_id: str = Form(...), name: str = Form(...), auteur: s
     service.update_book(book_id, book)
 
     return RedirectResponse(url="/books/liste", status_code=status.HTTP_302_FOUND)
+
+
+
+
+@router.get('/liste')
+async def get_books(request: Request) -> HTMLResponse:
+    try:
+        books = service.get_all_books()
+        return templates.TemplateResponse("liste_books.html", context={ "request" : request , "books": books})
+
+    except Exception as e:
+        # Si une erreur se produit, vous pouvez la gérer ici
+        # et renvoyer une réponse appropriée, par exemple une page d'erreur
+        return templates.TemplateResponse("error_add.html", {"error_message": str(e)})
