@@ -80,7 +80,10 @@ async def get_add_book(request: Request) -> HTMLResponse:
 
 
 @router.post("/add", response_class=RedirectResponse)
-async def create_new_book(name: str = Form(...), auteur: str = Form(...), editeur: str = Form(...)) -> RedirectResponse:
+async def create_new_book(name: str = Form(None), auteur: str = Form(None), editeur: str = Form(None)) -> RedirectResponse:
+    if name is None or auteur is None or editeur is None:
+        # Si tous les champs sont vides, redirigez vers la page d'erreur
+        return RedirectResponse(url="/books/error_add", status_code=status.HTTP_303_SEE_OTHER)
     new_book_data = {
         "id": str(uuid4()),
         "name": name,
@@ -94,7 +97,9 @@ async def create_new_book(name: str = Form(...), auteur: str = Form(...), editeu
         return RedirectResponse(url="/books/liste", status_code=status.HTTP_303_SEE_OTHER)
 
     except ValidationError as e:
+        error_message = ", ".join([f"{error['loc'][-1]}: {error['msg']}" for error in e.errors()])
         # Si une ValidationError est levée (données invalides), rediriger vers la page d'erreur
+
         return RedirectResponse(url="/books/error_add", status_code=status.HTTP_303_SEE_OTHER)
 
 
