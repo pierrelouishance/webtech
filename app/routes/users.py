@@ -25,13 +25,14 @@ def login_route(
         data={'sub': user.id}
     )
     
-    response = JSONResponse({"status": "success"})
+    response = RedirectResponse(url="/accueil", status_code=status.HTTP_302_FOUND)
     response.set_cookie(
         key=login_manager.cookie_name,
         value=access_token,
         httponly=True
     )
     return response
+
 
 @router.post('/logout')
 def logout_route():

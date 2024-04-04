@@ -25,11 +25,16 @@ database = {
         {
             "id": str(uuid4()),
             "username": "john",
+            "prenom":"john",
+            "nom":"doe",
             "password": "john_password",
+            "role":"client"
         },
         {
             "id": str(uuid4()),
             "username": "steve",
+            "prenom":"steve",
+            "nom":"estatof",
             "password": "steve_password",
             "role":"admin"
         },
