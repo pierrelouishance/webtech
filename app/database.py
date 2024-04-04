@@ -20,5 +20,19 @@ database = {
             "auteur": "Douglas Adams",
             "editeur": "Flammarion",
         },
+    ],
+    "users": [
+        {
+            "id": str(uuid4()),
+            "username": "john",
+            "password": "john_password",
+        },
+        {
+            "id": str(uuid4()),
+            "username": "steve",
+            "password": "steve_password",
+            "role":"admin"
+        },
     ]
+
 }
