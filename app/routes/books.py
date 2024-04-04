@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse, RedirectResponse, HTMLResponse
 from pydantic import ValidationError
 from uuid import uuid4
 from fastapi.templating import Jinja2Templates
-from app.schemas.schemas import Book
+from app.schemas.book_schemas import Book
 import app.services.services as service
 
 templates = Jinja2Templates(directory="templates")

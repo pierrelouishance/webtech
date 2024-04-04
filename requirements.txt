@@ -1,5 +1,5 @@
 fastapi
-uvicorn[standard]
+fastapi-login
 jinja2
-pydantic
-
+python-multipart
+uvicorn[standard]
