@@ -11,7 +11,9 @@
                     <th scope="col">Titre</th>
                     <th scope="col">Auteur</th>
                     <th scope="col">Editeur</th>
+                    {% if current_user.role=='admin' %}
                     <th scope="col">Action</th>
+                    {%endif%}
                 </tr>
             </thead>
             <tbody>
@@ -22,12 +24,14 @@
                     <td>{{ book.auteur }}</td>
                     <td>{{ book.editeur }}</td>
                     <td>
+                        {% if current_user.role=='admin' %}
                         <div class="d-flex justify-content-around">
                             <a href="/books/book/edit/{{ book.id }}" class="btn btn-warning">Editer</a>
                             <form action="/books/delete/{{ book.id }}" method="get" class="delete-form">
                                 <button type="submit" class="btn btn-danger">Supprimer</button>
                             </form>
                         </div>
+                        {%endif%}
                     </td>
                 </tr>
                 {% endfor %}

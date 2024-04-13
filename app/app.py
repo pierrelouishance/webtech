@@ -34,7 +34,7 @@ def get_accueil(request: Request,
     return templates.TemplateResponse("accueil.html", {"request": request,'current_user': user})
 
 @app.get('/',)
-def get_accueil(request: Request,
+def get_login(request: Request,
                 user: UserSchema = Depends(login_manager.optional),):
     return templates.TemplateResponse("login.html", {"request": request,'current_user': user})
     

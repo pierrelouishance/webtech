@@ -1,10 +1,12 @@
-from fastapi import APIRouter, HTTPException, Response, status, Request, Form
+from fastapi import APIRouter, HTTPException, Response, status, Request, Form,Depends
 from fastapi.responses import JSONResponse, RedirectResponse, HTMLResponse
 from pydantic import ValidationError
 from uuid import uuid4
 from fastapi.templating import Jinja2Templates
 from app.schemas.schemas import Book
 import app.services.services as service
+from app.login_manager import login_manager
+from app.schemas.users import  UserSchema
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(prefix="/books", tags=["Books"])
@@ -49,7 +51,7 @@ async def get_books_number() -> JSONResponse:
 
 
 @router.get("/add", response_class=HTMLResponse)
-async def get_add_book(request: Request) -> HTMLResponse:
+async def get_add_book(request: Request,user: UserSchema = Depends(login_manager.optional),) -> HTMLResponse:
     """
     Render a page for adding a new book.
 
@@ -59,7 +61,7 @@ async def get_add_book(request: Request) -> HTMLResponse:
     Returns:
         HTMLResponse: HTML page for adding a new book.
     """
-    return templates.TemplateResponse("add_book.html", {"request": request, "name": "", "auteur": "", "editeur": ""})
+    return templates.TemplateResponse("add_book.html", {"current_user":user,"request": request, "name": "", "auteur": "", "editeur": ""})
 
 
 
@@ -96,7 +98,7 @@ async def error_add_page(request: Request) -> HTMLResponse:
 
 
 @router.get("/book/edit/{book_id}", response_class=HTMLResponse)
-async def edit_book(request: Request, book_id: str) -> HTMLResponse:
+async def edit_book(request: Request, book_id: str,user: UserSchema = Depends(login_manager.optional),) -> HTMLResponse:
     """
     Render a page for editing a book.
 
@@ -111,7 +113,7 @@ async def edit_book(request: Request, book_id: str) -> HTMLResponse:
     if book is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 
-    return templates.TemplateResponse("edit_book.html", {"request": request, "book": book})
+    return templates.TemplateResponse("edit_book.html", {"current_user":user,"request": request, "book": book})
 
 
 @router.post("/update", response_class=RedirectResponse)
@@ -148,10 +150,11 @@ async def update_book(book_id: str = Form(None), name: str = Form(None), auteur:
         return RedirectResponse(url="/books/error_add", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get('/liste')
-async def get_books(request: Request) -> HTMLResponse:
+async def get_books(request: Request,
+                    user: UserSchema = Depends(login_manager.optional),) -> HTMLResponse:
     try:
         books = service.get_all_books()
-        return templates.TemplateResponse("liste_books.html", context={ "request" : request , "books": books})
+        return templates.TemplateResponse("liste_books.html", context={ "request" : request , "books": books,"current_user":user})
 
     except Exception as e:
         # Si une erreur se produit, vous pouvez la gérer ici
