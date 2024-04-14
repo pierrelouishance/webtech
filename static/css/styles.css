@@ -158,4 +158,14 @@ section {
   color: #007bff;
     font-size: 1.5em;
 
+
+}
+.forgot-password {
+  color: #808080;
+  font-style: italic;
+  text-decoration: none;
+}
+.forgot-password:hover {
+  color: #0000FF;
+  text-decoration: underline;
 }

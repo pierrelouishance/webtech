@@ -51,7 +51,7 @@ async def get_books_number() -> JSONResponse:
 
 
 @router.get("/add", response_class=HTMLResponse)
-async def get_add_book(request: Request,user: UserSchema = Depends(login_manager.optional),) -> HTMLResponse:
+async def get_add_book(request: Request,user: UserSchema = Depends(login_manager.optional)) -> HTMLResponse:
     """
     Render a page for adding a new book.
 

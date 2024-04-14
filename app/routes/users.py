@@ -15,19 +15,11 @@ templates = Jinja2Templates(directory="templates")
 router = APIRouter(prefix="/users")
 
 @router.post("/login")
-def login_route(
-        email: str = Form(None), password: str = Form(None)
-):
+def login_route(email: str = Form(None), password: str = Form(None)):
     user = get_user_by_email(email)
     if user is None or user.password != password:
-        return HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Bad credentials."
-        )
-    access_token = login_manager.create_access_token(
-        data={'sub': user.id}
-    )
-    
+        return RedirectResponse(url="/users/create", status_code=status.HTTP_302_FOUND)
+    access_token = login_manager.create_access_token(data={'sub': user.id})
     response = RedirectResponse(url="/accueil", status_code=status.HTTP_302_FOUND)
     response.set_cookie(
         key=login_manager.cookie_name,
@@ -80,6 +72,8 @@ def create_route_post(
 @router.get("/create")
 def create_route_get(request: Request, user: UserSchema = Depends(login_manager.optional)):
     return templates.TemplateResponse("create.html", {"request": request,'current_user': user})
+# @router.get("/userlist")
+# def get_user(request = Request, user : UserSchema = Depends(login_manager.optional)) : 
 
 
 @router.post('/logout')

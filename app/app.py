@@ -1,16 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request,Depends
 from fastapi.staticfiles import StaticFiles
 from app.routes.books import router as books_router
 from app.routes.users import router as user_router
-
 from app.schemas.users import  UserSchema
 from app.login_manager import login_manager
-from fastapi import APIRouter, HTTPException, status, Request, Form, Depends
-
-from fastapi import APIRouter, HTTPException, status, Request, Form
-from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-from pydantic import ValidationError
+
 templates = Jinja2Templates(directory="templates")
 
 
@@ -37,7 +32,3 @@ def get_accueil(request: Request,
 def get_accueil(request: Request,
                 user: UserSchema = Depends(login_manager.optional),):
     return templates.TemplateResponse("login.html", {"request": request,'current_user': user})
-    
-@app.get("/create_account")
-def create_account_form(request : Request, user: UserSchema = Depends(login_manager.optional)):
-    return templates.TemplateResponse("create_account.html", {"request": request, 'current_user': user})
