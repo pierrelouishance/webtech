@@ -103,7 +103,7 @@ async def edit_book(request: Request, book_id: str,user: UserSchema = Depends(lo
     Render a page for editing a book.
 
     Args:
-        request (Request): The incoming request.
+        request (Request): The incoming request.²
         book_id (str): The ID of the book to be edited.
 
     Returns:

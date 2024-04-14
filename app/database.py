@@ -24,7 +24,7 @@ database = {
     "users": [
         {
             "id": str(uuid4()),
-            "username": "john",
+            "email": "john@gmail.com",
             "prenom":"john",
             "nom":"doe",
             "password": "john_password",
@@ -32,7 +32,7 @@ database = {
         },
         {
             "id": str(uuid4()),
-            "username": "steve",
+            "email": "steve@gmail.com",
             "prenom":"steve",
             "nom":"estatof",
             "password": "steve_password",

@@ -1,10 +1,9 @@
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, Response, status, Request, Form,Body,Depends
-from fastapi.responses import JSONResponse
 from fastapi.responses import JSONResponse, RedirectResponse, HTMLResponse
 from pydantic import ValidationError
 from app.login_manager import login_manager
-from app.services.users import get_user_by_username,create_user
+from app.services.users import get_user_by_email,create_user
 from app.schemas.users import UserSchema
 from uuid import uuid4
 from fastapi.responses import RedirectResponse
@@ -17,9 +16,9 @@ router = APIRouter(prefix="/users")
 
 @router.post("/login")
 def login_route(
-        username: str = Form(None), password: str = Form(None)
+        email: str = Form(None), password: str = Form(None)
 ):
-    user = get_user_by_username(username)
+    user = get_user_by_email(email)
     if user is None or user.password != password:
         return HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -40,13 +39,13 @@ def login_route(
 
 @router.post("/create")
 def create_route_post(
-        username: str = Form(None),prenom:str=Form(None),nom:str=Form(None), password: str = Form(None)
+        email: str = Form(None),prenom:str=Form(None),nom:str=Form(None), password: str = Form(None)
 ):
     
 
     new_user_data = {
         "id": str(uuid4()),
-        "username": username,
+        "email": email,
         "prenom": prenom,
         "nom": nom,
         "password":password,
@@ -60,7 +59,7 @@ def create_route_post(
     except ValidationError as e:
         error_message = ", ".join([f"{error['loc'][-1]}: {error['msg']}" for error in e.errors()])
         # Si une ValidationError est levée (données invalides), rediriger vers la page d'erreur
-    user = get_user_by_username(username)
+    user = get_user_by_email(email)
     if user is None:
         return HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -79,8 +78,7 @@ def create_route_post(
     return response
 
 @router.get("/create")
-def create_route_get(request: Request,
-                user: UserSchema = Depends(login_manager.optional),):
+def create_route_get(request: Request, user: UserSchema = Depends(login_manager.optional)):
     return templates.TemplateResponse("create.html", {"request": request,'current_user': user})
 
 

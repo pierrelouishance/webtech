@@ -14,6 +14,7 @@ from pydantic import ValidationError
 templates = Jinja2Templates(directory="templates")
 
 
+
 app = FastAPI(title="Books")
 app.include_router(books_router)
 app.include_router(user_router)
@@ -27,14 +28,16 @@ def on_startup():
 def on_shutdown():
     print("Bye bye!")
 
-
 @app.get('/accueil')
 def get_accueil(request: Request,
-                user: UserSchema = Depends(login_manager.optional),):
+                user: UserSchema = Depends(login_manager.optional)):
     return templates.TemplateResponse("accueil.html", {"request": request,'current_user': user})
 
 @app.get('/',)
-def get_login(request: Request,
+def get_accueil(request: Request,
                 user: UserSchema = Depends(login_manager.optional),):
     return templates.TemplateResponse("login.html", {"request": request,'current_user': user})
     
+@app.get("/create_account")
+def create_account_form(request : Request, user: UserSchema = Depends(login_manager.optional)):
+    return templates.TemplateResponse("create_account.html", {"request": request, 'current_user': user})
