@@ -1,7 +1,7 @@
 from app.database import database
 # from app.schemas import Book
 from app.schemas.schemas import Book
-from fastapi import APIRouter, HTTPException, status
+from fastapi import HTTPException, status
 
 
 def get_all_books()  -> list[Book]:  
