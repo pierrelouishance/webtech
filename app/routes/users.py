@@ -1,24 +1,19 @@
-from fastapi import APIRouter, HTTPException, status, Request, Form,Body,Depends
+from fastapi import APIRouter, status, Request, Form, Depends
 from fastapi.responses import RedirectResponse
 from pydantic import ValidationError
 from app.login_manager import login_manager
 from app.services.users import *
 from app.schemas.users import UserSchema
-
 from uuid import uuid4
 from fastapi.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory="templates")
 
-
 router = APIRouter(prefix="/users")
 
-@router.post("/login")
-def login_route(email: str = Form(None), password: str = Form(None)):
-    user = get_user_by_email(email)
-    if user is None or user.password != password:
-        return RedirectResponse(url="/users/create", status_code=status.HTTP_302_FOUND)
-    access_token = login_manager.create_access_token(data={'sub': user.id})
+# Fonction utilitaire pour créer et définir un cookie d'authentification
+def create_auth_cookie(user_id: str) -> RedirectResponse:
+    access_token = login_manager.create_access_token(data={'sub': user_id})
     response = RedirectResponse(url="/accueil", status_code=status.HTTP_302_FOUND)
     response.set_cookie(
         key=login_manager.cookie_name,
@@ -27,7 +22,16 @@ def login_route(email: str = Form(None), password: str = Form(None)):
     )
     return response
 
+# Route de connexion
+@router.post("/login")
+def login_route(email: str = Form(None), password: str = Form(None)):
+    user = get_user_by_email(email)
+    if user is None or user.password != password:
+        return RedirectResponse(url="/users/create", status_code=status.HTTP_302_FOUND)
+    
+    return create_auth_cookie(user.id)
 
+# Route de création de compte
 @router.post("/create")
 def create_route_post(email: str = Form(None),prenom:str=Form(None),nom:str=Form(None), password: str = Form(None), role : str = Form(None)):
     if role is None:
@@ -42,7 +46,6 @@ def create_route_post(email: str = Form(None),prenom:str=Form(None),nom:str=Form
         "role": role 
     }
     try:
-
         new_user = UserSchema(**new_user_data)
         create_user(new_user)
 
@@ -50,37 +53,24 @@ def create_route_post(email: str = Form(None),prenom:str=Form(None),nom:str=Form
         error_message = ", ".join([f"{error['loc'][-1]}: {error['msg']}" for error in e.errors()])
         # Si une ValidationError est levée (données invalides), rediriger vers la page d'erreur
     user = get_user_by_email(email)
-    if user is None:
-        return HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Bad credentials."
-        )
-    access_token = login_manager.create_access_token(
-        data={'sub': user.id}
-    )
-    
-    response = RedirectResponse(url="/users/userlist", status_code=status.HTTP_302_FOUND)
-    response.set_cookie(
-        key=login_manager.cookie_name,
-        value=access_token,
-        httponly=True
-    )
-    return response
+    return create_auth_cookie(user.id)
 
+# Route pour afficher le formulaire de création de compte
 @router.get("/create")
 def create_route_get(request: Request, user: UserSchema = Depends(login_manager.optional)):
     return templates.TemplateResponse("create.html", {"request": request,'current_user': user})
 
+# Route pour afficher la liste des utilisateurs
 @router.get("/userlist")
-def get_user_list(request: Request, user: UserSchema = Depends(login_manager)):
-
+def get_user_list(request: Request, user: UserSchema = Depends(login_manager.optional)):
     if user.role == "admin":
         users = get_all_users()
-        return templates.TemplateResponse("user_list.html", {"request": request, "users": users, "current_user" : user })
-    else : 
+        return templates.TemplateResponse("user_list.html", {"request": request, "users": users, "current_user": user})
+    else:
+        # Rediriger le client vers l'accueil après la connexion
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
 
-
+# Route de déconnexion
 @router.post('/logout')
 def logout_route():
     response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
@@ -90,9 +80,7 @@ def logout_route():
     )
     return response
 
-
+# Route pour obtenir les informations de l'utilisateur actuel
 @router.get("/me")
-def current_user_route(
-    user: UserSchema = Depends(login_manager),
-):
+def current_user_route(user: UserSchema = Depends(login_manager)):
     return user
