@@ -68,9 +68,11 @@ async def get_add_book(request: Request,user: UserSchema = Depends(login_manager
 
 @router.post("/add", response_class=RedirectResponse)
 async def create_new_book(name: str = Form(None), auteur: str = Form(None), editeur: str = Form(None)) -> RedirectResponse:
+    
     if name is None or auteur is None or editeur is None:
         # Si tous les champs sont vides, redirigez vers la page d'erreur
-        return RedirectResponse(url="/books/error_add", status_code=status.HTTP_303_SEE_OTHER)
+        return RedirectResponse(url="/books/add", status_code=status.HTTP_303_SEE_OTHER)
+    
     new_book_data = {
         "id": str(uuid4()),
         "name": name,

@@ -4,7 +4,10 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-8">
-                <p>Vous êtes connecté en tant que {{current_user.email}}</p>
+                <!-- Utilisation de classes CSS pour styliser le message de bienvenue -->
+                <div class="welcome-message">
+                    <p>Bienvenue <span>{{ current_user.prenom }} {{ current_user.nom }}</span></p>
+                </div>
                 <h1>Bienvenue dans notre bibliothèque en ligne</h1>
                 <p class="lead">Explorez notre vaste collection de livres et trouvez votre prochaine lecture passionnante.</p>
                 <p>Que vous soyez un amateur de fiction, un passionné de non-fiction ou un étudiant en quête de ressources éducatives, notre bibliothèque en ligne est là pour répondre à vos besoins. Parcourez notre sélection de livres, ajoutez-les à votre liste de lecture et partagez vos découvertes avec d'autres passionnés de lecture.</p>

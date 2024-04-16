@@ -12,30 +12,46 @@
         <h2 class="text-primary">Créer un compte</h2>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="text" class="form-control" id="email" name="email">
+            <input type="email" class="form-control" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Veuillez entrer un email valide.">
+            <div class="invalid-feedback">
+                Veuillez renseigner ce champ.
+            </div>
         </div>
 
         <div class="mb-3">
             <label for="password" class="form-label">Mot de passe</label>
-            <input type="password" class="form-control" id="password" name="password">
+            <input type="password" class="form-control" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Doit contenir au moins un chiffre, une lettre majuscule, une lettre minuscule et au moins 8 caractères ou plus.">
+            <div class="invalid-feedback">
+                Veuillez renseigner ce champ.
+            </div>
         </div>
         
         <div class="mb-3">
             <label for="prenom" class="form-label">Prénom</label>
-            <input type="text" class="form-control" id="prenom" name="prenom">
+            <input type="text" class="form-control" id="prenom" name="prenom" required pattern="[a-zA-Z]+" title="Veuillez entrer un prénom valide.">
+            <div class="invalid-feedback">
+                Veuillez renseigner ce champ.
+            </div>
         </div>
         
         <div class="mb-3">
             <label for="nom" class="form-label">Nom</label>
-            <input type="text" class="form-control" id="nom" name="nom">
+            <input type="text" class="form-control" id="nom" name="nom" required pattern="[a-zA-Z]+" title="Veuillez entrer un nom valide.">
+            <div class="invalid-feedback">
+                Veuillez renseigner ce champ.
+            </div>
         </div>
         
         <div class="mb-3">
             <label for="role" class="form-label">Rôle</label>
-            <select class="form-select" id="role" name="role">
+            <select class="form-select" id="role" name="role" required>
+                <option value="">Sélectionnez un rôle</option>
                 <option value="client">client</option>
                 <option value="admin">admin</option>
             </select>
+            <div class="invalid-feedback">
+                Veuillez renseigner ce champ.
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Créer compte</button>
