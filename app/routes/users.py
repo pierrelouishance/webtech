@@ -58,41 +58,27 @@ def create_route_post(email: str = Form(None),prenom:str=Form(None),nom:str=Form
     access_token = login_manager.create_access_token(
         data={'sub': user.id}
     )
-    if user.role == "admin" :
-        response = RedirectResponse(url="/users/userlist", status_code=status.HTTP_302_FOUND)
-        response.set_cookie(
-            key=login_manager.cookie_name,
-            value=access_token,
-            httponly=True
-        )
-        return response
-    else : 
-        response = RedirectResponse(url="/users/userlist/client", status_code=status.HTTP_302_FOUND)
-        response.set_cookie(
-            key=login_manager.cookie_name,
-            value=access_token,
-            httponly=True
-        )
-        return response
+    
+    response = RedirectResponse(url="/users/userlist", status_code=status.HTTP_302_FOUND)
+    response.set_cookie(
+        key=login_manager.cookie_name,
+        value=access_token,
+        httponly=True
+    )
+    return response
 
 @router.get("/create")
 def create_route_get(request: Request, user: UserSchema = Depends(login_manager.optional)):
     return templates.TemplateResponse("create.html", {"request": request,'current_user': user})
 
 @router.get("/userlist")
-def get_admin_user_list(request: Request, user: UserSchema = Depends(login_manager.optional)):
+def get_user_list(request: Request, user: UserSchema = Depends(login_manager)):
 
     if user.role == "admin":
         users = get_all_users()
-        return templates.TemplateResponse("user_list.html", {"request": request, "users": users, "current_user": user})
-
-@router.get("/userlist/client")
-def get_client_user_list(request: Request, user: UserSchema = Depends(login_manager.optional)):
-
-    if user.role == "client":
-        users = get_all_users()
-        return templates.TemplateResponse("accueil.html", {"request": request, "users": users, "current_user": user})
-
+        return templates.TemplateResponse("user_list.html", {"request": request, "users": users, "current_user" : user })
+    else : 
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
 
 
 @router.post('/logout')
