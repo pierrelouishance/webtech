@@ -9,7 +9,8 @@
 </head>
 <body>
     <div class="d-flex justify-content-center align-items-center vh-100">
-        <form action="/users/login" method="post">
+        <div id="error-message" class="text-danger"></div>
+        <form id="login-form" action="/users/login" method="post">
             <h2 class="text-primary">Se connecter</h2>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
@@ -18,7 +19,7 @@
                     Veuillez renseigner ce champ.
                 </div>
             </div>
-
+        
             <div class="mb-3">
                 <label for="password" class="form-label">Mot de passe</label>
                 <input type="password" class="form-control" id="password" name="password" required placeholder="exemple: MotDePasse123">
@@ -26,19 +27,18 @@
                     Veuillez renseigner ce champ.
                 </div>
             </div>
-
+        
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="rememberMe">
                 <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
             </div>
-
-
-
+        
             <div class="mb-3 d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">CONNEXION</button>
                 <a class="btn btn-secondary" href="/users/create">CRÉER UN COMPTE</a>
             </div>
         </form>
+        
     </div>
 </body>
 </html>

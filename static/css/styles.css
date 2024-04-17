@@ -98,6 +98,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #007bff; /* Couleur du texte */
     text-decoration: none; /* Suppression du soulignement par défaut */
     color: #fff !important;
+    transition: background-color 0.5s ease;
 }
 
 .nav-link:hover {
@@ -166,11 +167,11 @@ section {
   text-decoration: none;
 }
 .forgot-password:hover {
-  color: #0000FF;
+  color: #212150;
   text-decoration: underline;
 }
 .welcome-message {
-  background-color: #f8f9fa; /* Couleur de fond */
+  background-color: #8c9dad; /* Couleur de fond */
   padding: 20px; /* Espacement intérieur */
   border-radius: 5px; /* Coins arrondis */
   margin-bottom: 20px; /* Marge inférieure */
@@ -182,5 +183,5 @@ section {
 
 .welcome-message span {
   font-weight: bold; /* Texte en gras */
-  color: #007bff; /* Couleur du texte */
+  color: #212150; /* Couleur du texte */
 }

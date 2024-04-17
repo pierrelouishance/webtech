@@ -27,20 +27,23 @@ def create_auth_cookie(user_id: str) -> RedirectResponse:
 def login_route(email: str = Form(None), password: str = Form(None)):
     user = get_user_by_email(email)
     if user is None or user.password != password:
-        return RedirectResponse(url="/users/create", status_code=status.HTTP_302_FOUND)
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     
     return create_auth_cookie(user.id)
 
 # Route de création de compte
 @router.post("/create")
-def create_route_post(email: str = Form(None),prenom:str=Form(None),nom:str=Form(None), password: str = Form(None), role : str = Form(None)):
+def create_route_post(email: str = Form(None),prenom:str=Form(None),nom:str=Form(None), password: str = Form(None), confirm_password:str = Form(None), role : str = Form(None)):
     
-    if email is None or prenom is None or nom is None or password is None:
+    if email is None or prenom is None or nom is None or password is None or confirm_password is None:
         # Si l'un des champs requis est manquant, rediriger vers la page de creation de page
         return RedirectResponse(url="/users/create", status_code=status.HTTP_303_SEE_OTHER)
     
     if role is None:
         role = "client"
+
+    if password != confirm_password : 
+        return RedirectResponse(url="/users/create?error=Les mots de passe ne correspondent pas", status_code=status.HTTP_303_SEE_OTHER)
 
     new_user_data = {
         "id": str(uuid4()),
@@ -48,6 +51,7 @@ def create_route_post(email: str = Form(None),prenom:str=Form(None),nom:str=Form
         "prenom": prenom,
         "nom": nom,
         "password":password,
+        "confirm_password" : confirm_password,
         "role": role 
     }
     try:

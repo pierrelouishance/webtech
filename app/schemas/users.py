@@ -9,4 +9,5 @@ class UserSchema(BaseModel):
     nom:str
     email: EmailStr
     password: str
+    confirm_password: str
     role:str

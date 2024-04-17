@@ -28,6 +28,7 @@ database = {
             "prenom":"john",
             "nom":"doe",
             "password": "john_password",
+            "confirm_password": "john_password",
             "role":"client"
         },
         {
@@ -36,6 +37,7 @@ database = {
             "prenom":"steve",
             "nom":"estatof",
             "password": "steve_password",
+            "confirm_password": "steve_password",
             "role":"admin"
         },
     ]
