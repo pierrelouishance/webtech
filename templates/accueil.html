@@ -1,0 +1,23 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <p>utilisateur : {{current_user.email}}</p>
+                <h1>Bienvenue dans notre bibliothèque en ligne</h1>
+                <p class="lead">Explorez notre vaste collection de livres et trouvez votre prochaine lecture passionnante.</p>
+                <p>Que vous soyez un amateur de fiction, un passionné de non-fiction ou un étudiant en quête de ressources éducatives, notre bibliothèque en ligne est là pour répondre à vos besoins. Parcourez notre sélection de livres, ajoutez-les à votre liste de lecture et partagez vos découvertes avec d'autres passionnés de lecture.</p>
+                <p>Vous pouvez également contribuer à notre communauté en ajoutant de nouveaux livres à notre collection. Notre processus d'ajout de livre est simple et rapide, alors n'hésitez pas à partager vos recommandations avec nous.</p>
+                <a href="/books/liste" class="btn btn-primary btn-lg">Commencer l'exploration</a>
+            </div>
+            <div class="col-md-4">
+                <!-- Ajoutez ici d'autres éléments, comme des suggestions de livres populaires, des promotions, etc. -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+{% endblock %}

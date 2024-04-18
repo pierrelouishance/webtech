@@ -1,0 +1,31 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <!-- Barre de navigation identique à celle de la page d'accueil -->
+    </nav>
+
+    <div class="container">
+        <h1 class="mb-3">Modifier un Livre</h1>
+        <!-- Formulaire pour modifier un livre -->
+        <form action="/books/update" method="post">
+            <input type="hidden" name="book_id" value="{{ book.id }}">
+            <div class="mb-3">
+                <label for="name" class="form-label">Nom du Livre</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ book.name }}">
+            </div>
+            <div class="mb-3">
+                <label for="auteur" class="form-label">Auteur</label>
+                <input type="text" class="form-control" id="auteur" name="auteur" value="{{ book.auteur }}">
+            </div>
+            <div class="mb-3">
+                <label for="editeur" class="form-label">Editeur</label>
+                <input type="text" class="form-control" id="editeur" name="editeur" value="{{ book.editeur }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% endblock %}
