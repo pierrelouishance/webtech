@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Request,Depends
 from fastapi.staticfiles import StaticFiles
+from app.database import create_database
+from app.initial_data import init_db
 from app.routes.books import router as books_router
 from app.routes.users import router as user_router
 from app.schemas.users import  UserSchema
@@ -15,10 +17,11 @@ app.include_router(books_router)
 app.include_router(user_router)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.on_event('startup')
-def on_startup():
-    print("Server started.")
-
+@app.on_event("startup")
+def on_application_started():
+    create_database()
+    init_db() 
+    
 
 def on_shutdown():
     print("Bye bye!")

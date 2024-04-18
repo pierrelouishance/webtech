@@ -6,6 +6,7 @@ from app.services.users import *
 from app.schemas.users import UserSchema
 from uuid import uuid4
 from fastapi.templating import Jinja2Templates
+from werkzeug.security import check_password_hash
 
 templates = Jinja2Templates(directory="templates")
 
@@ -26,7 +27,7 @@ def create_auth_cookie(user_id: str) -> RedirectResponse:
 @router.post("/login")
 def login_route(email: str = Form(None), password: str = Form(None)):
     user = get_user_by_email(email)
-    if user is None or user.password != password:
+    if user is None or not check_password_hash(user.password, password):
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     
     return create_auth_cookie(user.id)

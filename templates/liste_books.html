@@ -11,6 +11,8 @@
                     <th scope="col">Titre</th>
                     <th scope="col">Auteur</th>
                     <th scope="col">Editeur</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Statut</th>
                     {% if current_user.role=='admin' %}
                     <th scope="col">Action</th>
                     {%endif%}
@@ -20,9 +22,11 @@
                 {% for book in books %}
                 <tr>
                     <td>{{ book.id }}</td>
-                    <td>{{ book.name }}</td>
+                    <td>{{ book.nom }}</td>
                     <td>{{ book.auteur }}</td>
                     <td>{{ book.editeur }}</td>
+                    <td>{{ book.prix }}</td>
+                    <td>{{ book.is_sale }}</td>
                     <td>
                         {% if current_user.role=='admin' %}
                         <div class="d-flex justify-content-around">

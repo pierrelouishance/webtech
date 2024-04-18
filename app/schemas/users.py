@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import   BaseModel, EmailStr
 
 
 class UserSchema(BaseModel):
@@ -11,3 +11,4 @@ class UserSchema(BaseModel):
     password: str
     confirm_password: str
     role:str
+

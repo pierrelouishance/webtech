@@ -4,4 +4,5 @@ jinja2
 pydantic
 fastapi-login
 python-multipart
-
+sqlalchemy
+werkzeug
