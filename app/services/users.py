@@ -1,3 +1,4 @@
+from uuid import uuid4
 from fastapi import HTTPException
 from app.database import Session
 from app.models.users import User 
@@ -27,12 +28,13 @@ def create_user(new_user: User):
             raise HTTPException(status_code=400, detail="Email already registered")
 
         # Hachez le mot de passe avant de l'enregistrer dans la base de données
-        hashed_password = generate_password_hash(new_user.password or "password")
+        hashed_password = generate_password_hash(new_user.password)
 
         # Créez un nouvel objet utilisateur
         db_user = User(
+            id = str(uuid4()),
             email=new_user.email,
-            nom=new_user.nom,
+            name=new_user.name,
             prenom=new_user.prenom,
             password=hashed_password,
             confirm_password = hashed_password,

@@ -1,0 +1,78 @@
+.form-container {
+    display: flex;
+    justify-content: space-between;  
+}
+
+body {
+    background-color: #bdb6b6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 10px 0;
+}
+
+h1 {
+    border: 2px solid #000; /* Bordure inférieure sous "Identification" */
+    background-color: #744f4f;
+    padding: 10px 0;
+
+}
+.new-user {
+    background-color: #744f4f;
+    padding: 10px 0;
+}
+
+.breadcrumb{
+    position: absolute;
+    top: 130px;
+    left: 180px;
+    border-bottom: 1px solid #000; /* Bordure inférieure sous "Accueil" */
+    width: 80%;
+    padding: 10px 0;
+}
+
+.new-user h2 {
+    color: #ce1919; /* Rouge pas trop foncé */
+    background-color: #ffe0e0; /* Fond rose clair pour le surlignage */
+    font-weight: bold; /* Gras */
+    text-align: center;
+    padding: 10px 0;
+}
+.existing-user h2 {
+    color: #116dc9; /* Bleu clair pas trop foncé */
+    background-color:  #9cccfc; /* Bleu moins foncé */
+    font-weight: bold; /* Gras */
+    text-align: center;
+    padding: 10px 0;
+}
+
+.new-user h2::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+    z-index: -1;
+    padding: 10px 0;
+}
+.btn-primary {
+    background-color: #007bff; /* Bleu */
+    border-color: #007bff; /* Bleu */
+    color: #fff; /* Blanc */
+}
+
+.btn-primary:hover {
+    background-color: #fff; /* Blanc */
+    border-color: #007bff; /* Bleu */
+    color: #007bff; /* Bleu */
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+}
+

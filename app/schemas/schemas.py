@@ -1,5 +1,4 @@
 
-from typing import Optional
 from pydantic import BaseModel, Field
 
 
@@ -11,7 +10,7 @@ class BookSchema(BaseModel):
     id: str
     name: str = Field(min_length=3, max_length=50)
     auteur: str = Field(min_length=3, max_length=50)
-    editeur: Optional[str] = Field(min_length=3, max_length=50)
+    editeur: str | None
     prix : float
     is_sale : str
     owner_id : str 

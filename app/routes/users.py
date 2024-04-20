@@ -34,9 +34,9 @@ def login_route(email: str = Form(None), password: str = Form(None)):
 
 # Route de création de compte
 @router.post("/create")
-def create_route_post(email: str = Form(None),prenom:str=Form(None),nom:str=Form(None), password: str = Form(None), confirm_password:str = Form(None), role : str = Form(None)):
+def create_route_post(email: str = Form(None),prenom:str=Form(None),name:str=Form(None), password: str = Form(None), confirm_password:str = Form(None), role : str = Form(None)):
     
-    if email is None or prenom is None or nom is None or password is None or confirm_password is None:
+    if email is None or prenom is None or name is None or password is None or confirm_password is None:
         # Si l'un des champs requis est manquant, rediriger vers la page de creation de page
         return RedirectResponse(url="/users/create", status_code=status.HTTP_303_SEE_OTHER)
     
@@ -50,7 +50,7 @@ def create_route_post(email: str = Form(None),prenom:str=Form(None),nom:str=Form
         "id": str(uuid4()),
         "email": email,
         "prenom": prenom,
-        "nom": nom,
+        "name": name,
         "password":password,
         "confirm_password" : confirm_password,
         "role": role 

@@ -31,7 +31,7 @@ def get_accueil(request: Request,
                 user: UserSchema = Depends(login_manager.optional)):
     return templates.TemplateResponse("accueil.html", {"request": request,'current_user': user})
 
-@app.get('/',)
+@app.get('/')
 def get_accueil(request: Request,
                 user: UserSchema = Depends(login_manager.optional),):
     return templates.TemplateResponse("login.html", {"request": request,'current_user': user})

@@ -1,4 +1,4 @@
-import uuid
+from uuid import uuid4
 from sqlalchemy.orm import Session
 from app.models.users import User
 from app.database import Session
@@ -11,8 +11,9 @@ def init_db():
     admin = db.query(User).filter(User.email == "admin").first()
     if not admin:
         admin = User(
+            id = str(uuid4()),
             email="admin",
-            nom="Admin",
+            name="Admin",
             prenom="Admin",
             password=generate_password_hash("admin"),
             confirm_password=generate_password_hash("admin"),  
@@ -23,19 +24,21 @@ def init_db():
     user1 = db.query(User).filter(User.email == "user1@example.com").first()
     if not user1:
         user1 = User(
+            id = str(uuid4()),
             email="user1@example.com",
-            nom="User",
+            name="User",
             prenom="One",
             password=generate_password_hash("password"),
             confirm_password=generate_password_hash("password"),
             role="client"
         )
         db.add(user1)
-    book1 = db.query(Book).join(User).filter(Book.nom == "Book One", User.email == "admin").first()
+    book1 = db.query(Book).join(User).filter(Book.name == "Book One", User.email == "admin").first()
     if not book1 : 
         new = admin.id #recuperer l'id de l'administarteur 
         book1 = Book(
-            nom="Book One",
+            id = str(uuid4()),
+            name="Book One",
             auteur="Author One",
             editeur="Author One",
             prix=9.99,
@@ -43,11 +46,12 @@ def init_db():
             owner_id=new,
         )
         db.add(book1)
-    book2 = db.query(Book).join(User).filter(Book.nom == "Book Two", User.email == "user1@example.com").first()
+    book2 = db.query(Book).join(User).filter(Book.name == "Book Two", User.email == "user1@example.com").first()
     if not book2 : 
         new = user1.id  
         book2 = Book(
-            nom="Book Two",
+            id = str(uuid4()),
+            name="Book Two",
             auteur="Author Two",
             editeur="Author Two",
             prix=19.99,

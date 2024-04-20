@@ -6,7 +6,7 @@ class UserSchema(BaseModel):
         return getattr(self, key)
     id: str
     prenom:str
-    nom:str
+    name:str
     email: EmailStr
     password: str
     confirm_password: str

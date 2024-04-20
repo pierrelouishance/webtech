@@ -1,7 +1,18 @@
-{% extends "navbar.html" %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Livres</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <!-- Barre de navigation identique à celle de la page d'accueil -->
+    </nav>
 
-{% block content %}
-<div class="container mt-3">
+    <div class="container mt-3">
     <h1>Liste des Livres</h1>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -11,24 +22,16 @@
                     <th scope="col">Titre</th>
                     <th scope="col">Auteur</th>
                     <th scope="col">Editeur</th>
-                    <th scope="col">Prix</th>
-                    <th scope="col">Statut</th>
-                    <th scope="col">Propriétaire</th>
-                    {% if current_user.role=='admin' %}
                     <th scope="col">Action</th>
-                    {%endif%}
                 </tr>
             </thead>
             <tbody>
                 {% for book in books %}
                 <tr>
                     <td>{{ book.id }}</td>
-                    <td class="text-truncate">{{ book.name }}</td>
-                    <td class="text-truncate">{{ book.auteur }}</td>
-                    <td class="text-truncate">{{ book.editeur }}</td>
-                    <td class="text-truncate">{{ book.prix }}</td>
-                    <td class="text-truncate">{{ book.is_sale }}</td>
-                    <td class="text-truncate">{{ book.owner.name }} {{ book.owner.prenom }}</td>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.auteur }}</td>
+                    <td>{{ book.editeur }}</td>
                     {% if current_user.role=='admin' %}
                     <td>
                         <div class="d-flex justify-content-around">
@@ -36,7 +39,7 @@
                             <form action="/books/delete/{{ book.id }}" method="get" class="delete-form">
                                 <button type="submit" class="btn btn-danger">Supprimer</button>
                             </form>
-                        </div>    
+                        </div>
                     </td>
                     {%endif%}
                 </tr>
@@ -50,6 +53,7 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

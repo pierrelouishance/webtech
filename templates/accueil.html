@@ -6,7 +6,9 @@
             <div class="col-md-8">
                 <!-- Utilisation de classes CSS pour styliser le message de bienvenue -->
                 <div class="welcome-message">
-                    <p>Bienvenue <span>{{ current_user.prenom }} {{ current_user.nom }}</span></p>
+                    {% if current_user %}
+                        <p>Bienvenue <span>{{ current_user.prenom }} {{ current_user.nom }}</span></p>
+                    {% endif %}
                 </div>
                 <h1>Bienvenue dans notre bibliothèque en ligne</h1>
                 <p class="lead">Explorez notre vaste collection de livres et trouvez votre prochaine lecture passionnante.</p>
