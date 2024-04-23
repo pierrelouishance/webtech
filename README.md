@@ -15,7 +15,7 @@ Ce projet vise à créer une API de gestion de livres en utilisant FastAPI, une 
 
 3. **Démarrage du serveur** : Lancez le serveur en exécutant `uvicorn app.main:app --reload`. Cela lancera le serveur sur `http://localhost:8000`.
 
-4. **Utilisation de l'API** : Vous pouvez maintenant accéder à l'API en utilisant les points de terminaison fournis dans le fichier `books.py`. Par exemple, pour afficher tous les livres, visitez `http://localhost:8000/books/`la page s'affiche clair sans utiliser la documentation interactive automatique de l'API (fournie par Swagger UI), pour l'avoir visiter `http://localhost:8000/docs#/books/`
+4. **Utilisation de l'API** : Vous pouvez maintenant accéder à l'API en utilisant les points de terminaison fournis dans le fichier `books.py`. Par exemple, pour afficher tous les livres, visitez `http://localhost:8000/books/`la page s'affiche clair sans utiliser la documentation interactive automatique de l'API (fournie par Swagger UI), pour l'avoir visiter `http://localhost:8000/docs#/books/`.
 
 ## Les Étapes pour Utiliser les Fonctionnalités CRUD avec FastAPI
 
