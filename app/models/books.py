@@ -14,6 +14,6 @@ class Book(Base):
     prix    = mapped_column(Float, nullable=False)
     is_sale = mapped_column(String, nullable=False)
     
-    owner_id = mapped_column(String, ForeignKey('users.id'))
+    owner_id =  mapped_column(String, ForeignKey('users.id'))
 
     owner = relationship("User", back_populates="books")

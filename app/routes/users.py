@@ -94,3 +94,18 @@ def logout_route():
 @router.get("/me")
 def current_user_route(user: UserSchema = Depends(login_manager)):
     return user
+
+@router.post("/me/password")
+def update_password_route(request: Request, old_password: str = Form(None), new_password: str = Form(None), confirm_password: str = Form(None), current_user: UserSchema = Depends(login_manager.optional)):
+    if old_password is None or new_password is None or confirm_password is None: 
+        return RedirectResponse(url="/users/me/password", status_code=status.HTTP_303_SEE_OTHER)
+    if new_password != confirm_password : 
+        return RedirectResponse(url="/users/me/password?error=Les mots de passe ne correspondent pas", status_code=status.HTTP_303_SEE_OTHER)
+    update_password(old_password, new_password, current_user)
+    request.session["flash"] = {"type": "success", "message": "Password updated successfully"}
+    return RedirectResponse(url="/users/login", status_code=status.HTTP_303_SEE_OTHER)
+
+
+@router.get("/me/password")
+def get_password_change_form(request: Request, current_user: UserSchema = Depends(login_manager.optional)):
+    return templates.TemplateResponse("password_change.html", {"request": request, "user": current_user})

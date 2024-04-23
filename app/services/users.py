@@ -2,7 +2,9 @@ from uuid import uuid4
 from fastapi import HTTPException
 from app.database import Session
 from app.models.users import User 
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash,  check_password_hash
+
+from app.schemas.users import UserSchema
 
 def get_db():
     return Session()
@@ -49,3 +51,14 @@ def create_user(new_user: User):
         db.refresh(db_user)
 
         return db_user
+    
+def update_password(old_password: str, new_password: str, current_user: UserSchema):
+    with get_db() as db:
+        user = db.query(User).filter(User.id == current_user.id).first()
+        if not user or not check_password_hash(user.password, old_password):
+            raise HTTPException(status_code=400, detail="Incorrect old password")
+        hashed_new_password = generate_password_hash(new_password)
+        user.password = hashed_new_password
+        db.commit()
+
+

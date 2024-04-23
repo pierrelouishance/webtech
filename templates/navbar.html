@@ -22,10 +22,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/books/liste">Liste des Livres</a>
                     </li>
-                    {% if current_user.role=='admin' %}
+                    {% if current_user.role=='admin' or current_user.role=='client' %}
                     <li class="nav-item">
                         <a class="nav-link" href="/books/add">Ajouter des Livres</a>
                     </li>
+                    {%endif%}
+                    {% if current_user.role=='admin' %}
                     <li class="nav-item">
                         <a class="nav-link" href="/books/liste">Modifier des Livres</a>
                     </li>
