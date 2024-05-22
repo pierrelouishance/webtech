@@ -1,5 +1,8 @@
 fastapi
-fastapi-login
-jinja2
-python-multipart
 uvicorn[standard]
+jinja2
+pydantic
+fastapi-login
+python-multipart
+sqlalchemy
+werkzeug

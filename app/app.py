@@ -1,36 +1,40 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import Depends, FastAPI, Request, Form
 from fastapi.staticfiles import StaticFiles
-from app.routes.books import router as books_router
+from app.database.database import create_database
+from app.authentif.login_manager import login_manager
+from app.routes.notes import router as notes_router
+from app.routes.users import router as users_router
 from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
+
+from app.schemas.users import UserSchema
 
 
 templates = Jinja2Templates(directory="templates")
 
 
-app = FastAPI(title="Books")
-
+app = FastAPI(title="Notes")
+app.include_router(notes_router)
+app.include_router(users_router)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Register routes
-app.include_router(books_router)
-app.include_router(users.router)
 
 @app.on_event('startup')
-def on_startup():
-    print("Server started.")
-
-
+def on_application_started():
+    create_database()
+    # init_db()   initialiser la base de données fromm init data base 
+    
 def on_shutdown():
     print("Bye bye!")
 
-# Route for the home page
-@app.get('/',)
-def get_accueil(request: Request):
-    return templates.TemplateResponse("accueil.html", {"request": request})
+# # Route for the home page
+# @app.get('/accueil')
+# def get_accueil(request: Request,
+#                 user: UserSchema = Depends(login_manager.optional)):
+#     return templates.TemplateResponse("accueil.html", {"request": request,'current_user': user})
 
-# Route for handling 404 errors
-@app.exception_handler(404)
-async def not_found(request: Request, exc: Exception):
-    return RedirectResponse("/", status_code=303)
+# @app.get('/')
+# def get_accueil(request: Request,
+#                 user: UserSchema = Depends(login_manager.optional),):
+#     return templates.TemplateResponse("login.html", {"request": request,'current_user': user})
     
