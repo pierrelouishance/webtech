@@ -2,6 +2,7 @@ from fastapi import Depends, FastAPI, Request, Form
 from fastapi.staticfiles import StaticFiles
 from app.database.database import create_database
 from app.authentif.login_manager import login_manager
+from app.database.init_db import init_db
 from app.routes.notes import router as notes_router
 from app.routes.users import router as users_router
 from fastapi.templating import Jinja2Templates
@@ -22,7 +23,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.on_event('startup')
 def on_application_started():
     create_database()
-    # init_db()   initialiser la base de données fromm init data base 
+    init_db()  
     
 def on_shutdown():
     print("Bye bye!")
@@ -33,8 +34,8 @@ def on_shutdown():
 #                 user: UserSchema = Depends(login_manager.optional)):
 #     return templates.TemplateResponse("accueil.html", {"request": request,'current_user': user})
 
-# @app.get('/')
-# def get_accueil(request: Request,
-#                 user: UserSchema = Depends(login_manager.optional),):
-#     return templates.TemplateResponse("login.html", {"request": request,'current_user': user})
+@app.get('/')
+def get_accueil(request: Request,
+                user: UserSchema = Depends(login_manager.optional),):
+    return templates.TemplateResponse("login.html", {"request": request,'current_user': user})
     

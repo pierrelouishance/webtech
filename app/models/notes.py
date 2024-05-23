@@ -1,19 +1,14 @@
-from sqlalchemy import String, ForeignKey, Float
-from sqlalchemy.orm import relationship, mapped_column, Mapped
-from typing import Optional 
-
+from sqlalchemy import String, ForeignKey
+from sqlalchemy.orm import relationship, mapped_column
 from app.database.database import Base
 
-class Notes(Base):
+class Note(Base):
     __tablename__ = "notes"
 
-    id      = mapped_column(String, primary_key=True)
-    name     = mapped_column(String(50), nullable=False, unique=True)
-    auteur  = mapped_column(String(50), nullable=False)
-    editeur : Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
-    prix    = mapped_column(Float, nullable=False)
-    is_sale = mapped_column(String, nullable=False)
-    
-    # owner_id =  mapped_column(String, ForeignKey('users.id'))
+    id = mapped_column(String, primary_key=True)
+    text = mapped_column(String(50), nullable=False)
+    category = mapped_column(String, nullable=False)
+    owner_id = mapped_column(String, ForeignKey('users.id'))
 
-    # owner = relationship("User", back_populates="books")
+    owner = relationship("User", back_populates="notes")
+    shared_with = relationship("UserNote", back_populates="note")
