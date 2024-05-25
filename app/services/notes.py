@@ -1,7 +1,7 @@
 
 from fastapi import HTTPException
 from app.database.database import Session
-from app.models.notes import Notes
+from app.models.notes import Note
 from uuid import uuid4
 from sqlalchemy.orm import joinedload
 from sqlalchemy import select

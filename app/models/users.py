@@ -9,6 +9,7 @@ class User(Base):
     email = mapped_column(String(50), nullable=False, unique=True)
     name = mapped_column(String(50), nullable=False)
     password = mapped_column(String(50), nullable=False)
+    confirm_password = mapped_column(String(50), nullable=False)
     
     notes = relationship("Note", back_populates="owner")
     shared_notes = relationship("UserNote", back_populates="user")

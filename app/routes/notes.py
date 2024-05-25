@@ -5,7 +5,7 @@ from uuid import uuid4
 from sqlalchemy.exc import IntegrityError
 from fastapi.templating import Jinja2Templates
 from app.models.users import User
-from app.models.notes import Notes
+from app.models.notes import Note
 from app.schemas.notes import NoteSchema
 from app.schemas.users import UserSchema
 from app.services import notes as note

@@ -20,3 +20,31 @@ def get_user_by_email(email: str):
 def get_user_by_id(id: str):
     with get_db() as db:
         return db.query(User).filter(User.id == id).first()
+    
+def create_user(new_user: User):
+    with get_db() as db:
+        # Vérifiez si l'utilisateur existe déjà
+        db_user = db.query(User).filter(User.email == new_user.email).first()
+        if db_user:
+            raise HTTPException(status_code=400, detail="Email already registered")
+
+        # Hachez le mot de passe avant de l'enregistrer dans la base de données
+        hashed_password = generate_password_hash(new_user.password)
+
+        # Créez un nouvel objet utilisateur
+        db_user = User(
+            id = str(uuid4()),
+            email=new_user.email,
+            name=new_user.name,
+            password=hashed_password,
+            confirm_password = hashed_password,
+        )
+
+        # Ajoutez l'utilisateur à la base de données et validez la transaction
+        db.add(db_user)
+        db.commit()
+
+        # Rafraîchissez l'objet utilisateur pour obtenir toutes les colonnes, y compris l'ID
+        db.refresh(db_user)
+
+        return db_user

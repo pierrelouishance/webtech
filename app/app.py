@@ -28,7 +28,7 @@ def on_application_started():
 def on_shutdown():
     print("Bye bye!")
 
-# # Route for the home page
+# Route for the home page
 # @app.get('/accueil')
 # def get_accueil(request: Request,
 #                 user: UserSchema = Depends(login_manager.optional)):
