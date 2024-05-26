@@ -1,7 +1,7 @@
-/* Body */
+Body
 body {
     font-family: Arial, sans-serif;
-    background-image: url('/static/images/library2.jpg');
+    background-image: url('/static/images/note0.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     color: #fff;
@@ -102,10 +102,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-link:hover {
     background-color: #007bff; /* Couleur de fond au survol */
-    color: #fff; /* Couleur du texte au survol */
+  color: #fff; /* Couleur du texte au survol */
 
 
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }

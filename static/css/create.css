@@ -8,3 +8,11 @@ body {
 form {
     width: 50%;
 }
+h2 {
+    color: black; 
+    text-align: center ;  
+    border: 2px solid #000;
+    background-color: #7a6358;
+    padding: 10px 0;
+
+}

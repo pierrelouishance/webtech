@@ -6,8 +6,6 @@ from app.database.init_db import init_db
 from app.routes.notes import router as notes_router
 from app.routes.users import router as users_router
 from fastapi.templating import Jinja2Templates
-from pydantic import ValidationError
-
 from app.schemas.users import UserSchema
 
 
