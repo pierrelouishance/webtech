@@ -10,31 +10,41 @@
     <script src="/static/js/create.js"></script>
 </head>
 <body>
-    <form action="/users/create" method="post">
-        <h2 class="text4">Créer un compte NoTe</h2>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
-        </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="mt-5">Bienvenue dans NoTe</h1>
+                <p class="lead">
+                    Créez un compte dès maintenant pour commencer à utiliser NoTe et bénéficier de toutes ces fonctionnalités.
+                </p>
 
-        <div class="mb-3">
-            <label for="password" class="form-label">Mot de passe</label>
-            <input type="password" class="form-control" id="password" name="password" >
-        </div>
+                <form action="/users/create" method="post" class="mt-4">
+                    <h2 class="text-center">Créer un compte</h2>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                    </div>
 
-        <div class="mb-3">
-            <label for="confirm_password" class="form-label">Confirmer le mot de passe</label>
-            <input type="password" class="form-control" id="confirm_password" name="confirm_password">
-            <div id="error-message" class="text-danger"></div>
-        </div>
-        <div class="mb-3">
-            <label for="name" class="form-label">name</label>
-            <input type="text" class="form-control" id="name" name="name" required pattern="[a-zA-Z]+">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
 
-        </div>
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Confirmer le mot de passe</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                        <div id="error-message" class="text-danger"></div>
+                    </div>
 
-        <button type="submit" class="btn btn-primary">Créer compte</button>
-    </form>
-   
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="name" name="name" required pattern="[a-zA-Z]+">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Créer compte</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

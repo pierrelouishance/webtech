@@ -1,7 +1,6 @@
-Body
 body {
     font-family: Arial, sans-serif;
-    background-image: url('/static/images/note0.jpg');
+    background-image: url('/static/images/note2.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     color: #fff;
@@ -11,7 +10,7 @@ body {
 
 /* Navigation */
 .navbar {
-    background-color: #343a40 !important;
+    background-color: #465f79 !important;
 }
 
 .navbar-brand {
@@ -34,7 +33,11 @@ body {
 
 /* Heading */
 h1, h2, h3, h4, h5, h6 {
-    color: #fff;
+    color: #111010;
+    text-align: center ;  
+    border: 2px solid #000;
+    background-color: #7a6358;
+    padding: 10px 0;
 }
 
 /* Buttons */
@@ -101,7 +104,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-link:hover {
-    background-color: #007bff; /* Couleur de fond au survol */
+  background-color: #007bff; /* Couleur de fond au survol */
   color: #fff; /* Couleur du texte au survol */
 
 

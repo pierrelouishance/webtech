@@ -1,39 +1,52 @@
-.form-container {
-    display: flex;
-    justify-content: space-between;  
-}
-
 body {
-    background-color: #bdb6b6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-image: url('/static/images/note1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff;
     margin: 0;
-    padding: 10px 0;
+    padding: 0;
 }
 
 h1 {
     border: 2px solid #000; /* Bordure inférieure sous "Identification" */
     background-color: #744f4f;
     padding: 10px 0;
-
+    text-align: center;
 }
-.new-user {
+
+.existing-user, .new-user {
+    margin-bottom: 20px;
     background-color: #744f4f;
     padding: 10px 0;
+    margin-bottom: 20px;
+    border-radius: 10px;
 }
 
-.breadcrumb{
+.breadcrumb {
     position: absolute;
     top: 130px;
     left: 180px;
+    transform: translateX(-50%);
     border-bottom: 1px solid #000; /* Bordure inférieure sous "Accueil" */
     width: 80%;
     padding: 10px 0;
+    background-color: rgba(255, 255, 255, 0.8); /* Background with some transparency */
+    color: #000;
+    border-radius: 10px;
+}
+
+.new-user h2, .existing-user h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 10px 0;
+    background-color: rgba(255, 255, 255, 0.8); /* Background with some transparency */
+    color: #000;
+    border-radius: 10px;
 }
 
 .new-user h2 {
+    font-size: 1.5rem;
     color: #ce1919; /* Rouge pas trop foncé */
     background-color: #ffe0e0; /* Fond rose clair pour le surlignage */
     font-weight: bold; /* Gras */
@@ -46,6 +59,7 @@ h1 {
     font-weight: bold; /* Gras */
     text-align: center;
     padding: 10px 0;
+    font-size: 1.5rem;
 }
 
 .new-user h2::after {
@@ -59,10 +73,18 @@ h1 {
     z-index: -1;
     padding: 10px 0;
 }
+
+
 .btn-primary {
     background-color: #007bff; /* Bleu */
     border-color: #007bff; /* Bleu */
     color: #fff; /* Blanc */
+}
+.logo {
+    display: block;
+    margin: 0 auto;
+    max-width: 200px; /* Adjust as needed */
+    margin-bottom: 20px;
 }
 
 .btn-primary:hover {
@@ -74,5 +96,12 @@ h1 {
 .form-container {
     display: flex;
     justify-content: space-between;
+    margin-top: 20px;
 }
-
+input, label, .new-user p, .form-control {
+    color: #000; /* Black text */
+}
+                     
+input::placeholder {
+    color: #777; /* Gray placeholder text */
+}

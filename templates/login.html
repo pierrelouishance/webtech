@@ -8,59 +8,80 @@
     <link rel="stylesheet" href="/static/css/login.css">
 </head>
 <body>
-    <ol class="breadcrumb">
+    <!-- <ol class="breadcrumb">
         <li>
             <form action="/accueil" method="get">
-                <button type="submit">Page Sans Connexion</button>
+                <button type="submit" class="btn btn-link">Page Sans Connexion</button>
             </form>
         </li>
-        <li class="active">   - connexion </li>
-    </ol>
+        <li class="active"> - Connexion</li>
+    </ol> -->
+
     <div class="container">
-        <h1 class="text-center mb-4">IDENTIFICATION</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <img src="/static/images/note.png" alt="NoTe Logo" class="logo">
+                <p class="lead">
+                    NoTe est votre solution idéale pour gérer toutes vos notes en ligne. Avec un compte NoTe, vous pouvez :
+                </p>
+                <ul>
+                    <li>Créer et organiser vos notes par catégories.</li>
+                    <li>Partager vos notes avec d'autres utilisateurs.</li>
+                    <li>Accéder à vos notes depuis n'importe quel appareil.</li>
+                    <li>Sécuriser vos informations avec un mot de passe.</li>
+                </ul>
+                <p class="text-center">
+                    Créez un compte dès maintenant pour commencer à utiliser NoTe et bénéficier de toutes ces fonctionnalités.
+                </p>
 
-        <!-- Section for new users -->
-        <div class="row justify-content-center align-items-start mb-5 form-container">
-            <div class="col-md-4 bg-white p-4 border rounded new-user">
-                <form id="new-user-form" action="/users/create" method="post">
-                    <h2>NOUVEL UTILISATEUR</h2>
-                    Vous souhaitez créer un compte ?<br/>
-                    Il vous suffit de cliquer et compléter le formulaire pour profiter des avantages offerts par votre compte.
-                    <button type='submit' class='btn btn-primary'>Créer un compte</button>
-                </form> 
-            </div>
-
-            <!-- Section for existing users -->
-            <div class='col-md-4 bg-white p-4 border rounded ms-md-5 existing-user'>
-                <form id="login-form" action="/users/login" method="post">
-                    <h2 class="text-primary">J'AI DÉJÀ UN COMPTE</h2>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="text" class="form-control" id="email" name="email" required placeholder="exemple: email@exemple.com">
-                        <div class="invalid-feedback">
-                            Veuillez renseigner ce champ.
-                        </div>
+                <h1 class="text-center mb-4">IDENTIFICATION</h1>
+                <div class="row justify-content-center form-container">
+                    <!-- Section for new users -->
+                    <div class="col-md-5 bg-white p-4 border rounded new-user">
+                        <form id="new-user-form" action="/users/create" method="post">
+                            <h2 class="text-primary">NOUVEL UTILISATEUR</h2>
+                            <p>
+                                Vous souhaitez créer un compte ?<br/>
+                                Il vous suffit de cliquer et de compléter le formulaire pour profiter des avantages offerts par votre compte.
+                            </p>
+                            <button type="submit" class="btn btn-primary">Créer un compte</button>
+                        </form>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" id="password" name="password" required placeholder="exemple: MotDePasse123">
-                        <div class="invalid-feedback">
-                            Veuillez renseigner ce champ.
-                        </div>
-                    </div>
+                    <!-- Section for existing users -->
+                    <div class="col-md-5 bg-white p-4 border rounded ms-md-3 existing-user">
+                        <form id="login-form" action="/users/login" method="post">
+                            <h2 class="text-primary">J'AI DÉJÀ UN COMPTE</h2>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required placeholder="exemple: email@exemple.com">
+                                <div class="invalid-feedback">
+                                    Veuillez renseigner ce champ.
+                                </div>
+                            </div>
 
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">
-                            Se souvenir de moi
-                        </label>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Mot de passe</label>
+                                <input type="password" class="form-control" id="password" name="password" required placeholder="exemple: MotDePasse123">
+                                <div class="invalid-feedback">
+                                    Veuillez renseigner ce champ.
+                                </div>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">
+                                    Se souvenir de moi
+                                </label>
+                            </div>
+
+                            <div class="mb-3 d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">Connexion</button>
+                                <a class="btn btn-secondary" href="/users/me/password">Mot de passe oublié ?</a>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3 d-flex justify-content-between">
-                        <button type='submit' class='btn btn-primary'>Connexion</button>
-                        <a class="btn btn-secondary" href="/users/me/password">Mot de passe oublié ?</a>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
