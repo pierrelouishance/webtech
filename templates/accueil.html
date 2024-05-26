@@ -1,0 +1,26 @@
+{% extends "menu.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>Bienvenue dans NoTe</h1>
+                <p class="lead">Gérez toutes vos notes en ligne avec NoTe. Voici ce que vous pouvez faire :</p>
+                <ul>
+                    <li>Créer une nouvelle note pour enregistrer des informations importantes.</li>
+                    <li>Afficher la liste de toutes vos notes pour une consultation rapide.</li>
+                    <li>Modifier le contenu ou les détails d'une note existante.</li>
+                    <li>Supprimer une note que vous n'avez plus besoin.</li>
+                    <li>Rechercher une note spécifique en fonction de critères comme la date ou la catégorie.</li>
+                    <li>Partager une note avec d'autres utilisateurs, en autorisant la lecture seule ou la modification.</li>
+                </ul>
+                <a href="/notes/create" class="btn btn-primary btn-lg">Créer une nouvelle note</a>
+            </div>
+            <div class="col-md-4">
+                <!-- Ajoutez ici d'autres éléments, comme des notes récentes, des catégories, etc. -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

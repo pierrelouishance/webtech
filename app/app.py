@@ -27,10 +27,10 @@ def on_shutdown():
     print("Bye bye!")
 
 # Route for the home page
-# @app.get('/accueil')
-# def get_accueil(request: Request,
-#                 user: UserSchema = Depends(login_manager.optional)):
-#     return templates.TemplateResponse("accueil.html", {"request": request,'current_user': user})
+@app.get('/accueil')
+def get_home(request: Request,
+                user: UserSchema = Depends(login_manager.optional)):
+    return templates.TemplateResponse("accueil.html", {"request": request,'current_user': user})
 
 @app.get('/')
 def get_accueil(request: Request,
