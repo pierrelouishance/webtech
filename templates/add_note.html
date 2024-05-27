@@ -1,0 +1,27 @@
+{% extends "menu.html" %}
+
+{% block content %}
+
+    <form action="/notes/add" method="post">
+        <h2 >Ajouter une Note </h2>
+        <div class="mb-3">
+            <label for="text" class="form-label">Texte de la Note</label>
+            <textarea class="form-control" id="text" name="text" rows="5"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Catégorie</label>
+            <select class="form-select" id="category" name="category">
+                <option value="">Sélectionnez une catégorie</option>
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+    </form>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+{% endblock %}

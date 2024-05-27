@@ -15,7 +15,7 @@ router = APIRouter(prefix="/users")
 # Fonction utilitaire pour créer et définir un cookie d'authentification
 def create_auth_cookie(user_id: str) -> RedirectResponse:
     access_token = login_manager.create_access_token(data={'sub': user_id})
-    response = RedirectResponse(url="/accueil", status_code=status.HTTP_302_FOUND)
+    response = RedirectResponse(url="/accueil?success= vous étes connecté en tant qu'utilisateur", status_code=status.HTTP_302_FOUND)
     response.set_cookie(
         key=login_manager.cookie_name,
         value=access_token,
@@ -25,7 +25,8 @@ def create_auth_cookie(user_id: str) -> RedirectResponse:
 # Fonction utilitaire pour créer et définir un cookie d'authentification
 def create_auth_cookie_login(user_id: str) -> RedirectResponse:
     access_token = login_manager.create_access_token(data={'sub': user_id})
-    response = RedirectResponse(url="/users/login", status_code=status.HTTP_302_FOUND)
+    response = RedirectResponse(url="""/users/login?success=Votre compte a été crée avec succès
+                                                        connectez-vous dès à présent !""", status_code=status.HTTP_302_FOUND)
     response.set_cookie(
         key=login_manager.cookie_name,
         value=access_token,
@@ -38,7 +39,7 @@ def create_auth_cookie_login(user_id: str) -> RedirectResponse:
 def login_route(email: str = Form(None), password: str = Form(None)):
     user = get_user_by_email(email)
     if user is None or not check_password_hash(user.password, password):
-        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+        return RedirectResponse(url="/?error=vos identifiants sont incorrect", status_code=status.HTTP_302_FOUND)
     
     return create_auth_cookie(user.id)
 
@@ -91,3 +92,54 @@ def logout_route():
     )
     return response
 
+@router.get("/account")
+def account_info(request: Request, current_user: UserSchema = Depends(login_manager)):
+    return templates.TemplateResponse("account_info.html", {"request": request, "current_user": current_user})
+
+@router.get("/account/update")
+def update_account_form(request: Request, current_user: UserSchema = Depends(login_manager)):
+    return templates.TemplateResponse("update_account.html", {"request": request, "current_user": current_user})
+
+@router.post("/account/update")
+def update_account(request: Request, current_user: UserSchema = Depends(login_manager),
+                   name: str = Form(None), email: str = Form(None),
+                   new_password: str = Form(None), confirm_password: str = Form(None)):
+
+    # Vérifier si les nouveaux mots de passe correspondent
+    if new_password != confirm_password:
+        return RedirectResponse(url="/?error=Les mots de passe que vous avez saisi ne correspondent pas.", status_code=status.HTTP_302_FOUND)
+
+    # Mettre à jour les informations de l'utilisateur
+    current_user.name = name
+    current_user.email = email
+
+    # Hasher et mettre à jour le mot de passe uniquement s'il a été modifié
+    if new_password.strip() != "":
+        current_user.password = generate_password_hash(new_password)
+        current_user.confirm_password = generate_password_hash(new_password)
+
+    # Mettre à jour l'utilisateur dans la base de données
+    update_user(current_user)
+
+    # Rediriger l'utilisateur vers la page d'informations personnelles avec un message de succès
+    return RedirectResponse(url="/?success=Votre mot de passe a été réinitialisé avec succès.", status_code=status.HTTP_302_FOUND)
+
+@router.get("/password/reset/request")
+def password_reset_request_form(request: Request):
+    return templates.TemplateResponse("password_reset_request.html", {"request": request})
+
+@router.post("/password/reset/request")
+def password_reset_request(email: str = Form(None), name: str = Form(None), new_password: str = Form(None), confirm_password: str = Form(None)):
+    if new_password != confirm_password:
+        return RedirectResponse(url="/users/password/reset/request?error=Les mots de passe ne correspondent pas", status_code=status.HTTP_302_FOUND)
+    
+    user = get_user_by_email(email)
+    if user is None or user.name != name:
+        return RedirectResponse(url="/users/password/reset/request?error=Informations incorrectes", status_code=status.HTTP_302_FOUND)
+    
+    user.password = generate_password_hash(new_password)
+    user.confirm_password = user.password  
+    
+    update_user(user)
+    return RedirectResponse(url="""/?success=Votre mot de passe a été réinitialisé avec succès.
+                                veuillez vous connecter à présent !""", status_code=status.HTTP_302_FOUND)

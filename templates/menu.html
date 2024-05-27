@@ -23,14 +23,20 @@
                         <a class="nav-link" href="/notes/liste">Liste des Notes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/notes/creer">Créer une Note</a>
+                        <a class="nav-link" href="/notes/add">Créer une Note</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/notes/partager">Partager une Note</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/notes/partagees">Voir partage</a>
+                    </li>
+                    <li class="nav-item">
                         {% if current_user %}
-                        <a class="nav-link" href="/notes/mes_notes">Notes de {{ current_user.nom }}</a>
+                        <a class="nav-link" href="/notes/mes_notes">Notes de {{ current_user.name }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/account">A propos de {{ current_user.name }} </a>
                         {% endif %}
                     </li>
                 </ul>

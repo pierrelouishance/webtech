@@ -4,8 +4,6 @@ from app.database.database import Session
 from app.models.users import User 
 from werkzeug.security import generate_password_hash,  check_password_hash
 
-from app.schemas.users import UserSchema
-
 def get_db():
     return Session()
 
@@ -46,5 +44,24 @@ def create_user(new_user: User):
 
         # Rafraîchissez l'objet utilisateur pour obtenir toutes les colonnes, y compris l'ID
         db.refresh(db_user)
+
+        return db_user
+    
+
+def update_user(updated_user: User):
+    with get_db() as db:
+        # Recherche l'utilisateur dans la base de données
+        db_user = db.query(User).filter(User.id == updated_user.id).first()
+        if not db_user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        # Met à jour les informations de l'utilisateur
+        db_user.name = updated_user.name
+        db_user.email = updated_user.email
+        db_user.password = updated_user.password
+        db_user.confirm_password = updated_user.password
+
+        # Enregistre les modifications dans la base de données
+        db.commit()
 
         return db_user

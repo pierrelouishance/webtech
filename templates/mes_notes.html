@@ -1,0 +1,32 @@
+{% extends "menu.html" %}
+
+{% block content %}
+<div class="container mt-3">
+    <h1>Mes Notes</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Texte</th>
+                    <th scope="col">Catégorie</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for note in user_notes %}
+                <tr>
+                    <td>{{ note.id }}</td>
+                    <td class="text-truncate">{{ note.text }}</td>
+                    <td class="text-truncate">{{ note.category }}</td>
+                    <td>
+                        <a href="/notes/edit/{{ note.id }}" class="btn btn-warning">Modifier</a>
+                        <a href="/notes/delete/{{ note.id }}" class="btn btn-danger">Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

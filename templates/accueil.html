@@ -5,6 +5,11 @@
         <div class="row">
             <div class="col-md-8">
                 <h1>Bienvenue dans NoTe</h1>
+                {% if request.query_params.get('success') %}
+                    <div class="alert alert-success" role="alert">
+                        {{ request.query_params.get('success') }}
+                    </div>
+                {% endif %}
                 <p class="lead">Gérez toutes vos notes en ligne avec NoTe. Voici ce que vous pouvez faire :</p>
                 <ul>
                     <li>Créer une nouvelle note pour enregistrer des informations importantes.</li>
@@ -14,7 +19,7 @@
                     <li>Rechercher une note spécifique en fonction de critères comme la date ou la catégorie.</li>
                     <li>Partager une note avec d'autres utilisateurs, en autorisant la lecture seule ou la modification.</li>
                 </ul>
-                <a href="/notes/create" class="btn btn-primary btn-lg">Créer une nouvelle note</a>
+                <a href="/notes/add" class="btn btn-primary btn-lg">Créer une nouvelle note</a>
             </div>
             <div class="col-md-4">
                 <!-- Ajoutez ici d'autres éléments, comme des notes récentes, des catégories, etc. -->

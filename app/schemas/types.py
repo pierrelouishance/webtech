@@ -1,6 +1,5 @@
-# Définition des types forward-referenced
-from typing import TYPE_CHECKING
+from pydantic import BaseModel
 
-if TYPE_CHECKING:
-    from app.schemas.users import UserSchema
-    from app.schemas.notes import NoteSchema
+class NoteShareSchema(BaseModel):
+    note_id: str
+    user_id: str

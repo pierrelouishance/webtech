@@ -1,0 +1,11 @@
+<!-- notes_partagees.html -->
+{% extends "menu.html" %}
+
+{% block content %}
+<h1>Notes partagées avec moi</h1>
+<ul>
+    {% for note in notes %}
+    <li>{{ note.text }} (Catégorie: {{ note.category }})</li>
+    {% endfor %}
+</ul>
+{% endblock %}

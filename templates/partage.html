@@ -1,0 +1,25 @@
+{% extends "menu.html" %}
+
+{% block content %}
+<form action="/notes/partager" method="post">
+    <label for="note_id">Sélectionner une de vos notes:</label>
+    <select id="note_id" name="note_id" required>
+        {% for note in user_notes %}
+            <option value="{{ note.id }}">{{ note.text }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="user_id">Destinataire:</label>
+    <select id="user_id" name="user_id" required>
+        {% for user in users %}
+            <option value="{{ user.id }}">{{ user.email }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Partager la Note</button>
+</form>
+
+
+
+{% endblock %}
+
